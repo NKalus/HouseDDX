@@ -155,6 +155,11 @@ diagnosis_bank = {
 }
 
 # --- Image classification ---
+file.save(filepath)
+img = Image.open(filepath)
+img.thumbnail((512, 512))  # Resize in-place
+img.save(filepath)
+
 def classify_image(img_path):
     try:
         img = image.load_img(img_path, target_size=(224, 224))
@@ -196,6 +201,8 @@ def generate_diagnosis(img_path):
         print(f"Diagnosis generation error: {e}")
         traceback.print_exc()
         return "Diagnostic error. Likely idiocy."
+    import gc
+    gc.collect()
 
 # --- Main route ---
 @app.route('/', methods=['GET', 'POST'])

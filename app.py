@@ -1,9 +1,14 @@
+from PIL import Image
+import tensorflow as tf
+tf.config.set_visible_devices([], 'GPU')  # Force CPU-only mode on Render
 import os
 import random
 import numpy as np
 from flask import Flask, render_template, request
 from keras.applications.mobilenet_v2 import MobileNetV2, preprocess_input, decode_predictions
 from keras.preprocessing import image
+from tensorflow.keras.applications import MobileNetV2
+import traceback
 
 # --- Environment variables to prevent TensorFlow GPU issues on macOS ---
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"

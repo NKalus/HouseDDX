@@ -1,9 +1,11 @@
+**render.yaml**
+```yaml
 services:
   - type: web
-    name: house-of-house
+    name: house-ddx
     env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: python app.py
-    envVars:
-      - key: PORT
-        value: 10000
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"
+    plan: free
+    branch: main
+    autoDeploy: true

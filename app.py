@@ -207,18 +207,21 @@ def generate_diagnosis(img_path):
     gc.collect()
 
 # --- Main route ---
+from flask import Flask, request, render_template
+import os
+
+app = Flask(__name__)
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    diagnosis = None
-    quote = None
-    quotes = [
-        "Everybody lies.",
-        "I take risks. Sometimes patients die. But not taking risks causes more patients to die — so I guess my biggest problem is I've been cursed with the ability to do the math.",
-        "It's never lupus. Except when it is.",
-        "Humanity is overrated.",
-        "If you talk to God, you're religious. If God talks to you, you're psychotic.",
-        "I'm not always miserable. Sometimes I'm asleep."
-    ]
+    if request.method == 'POST':
+        uploaded_file = request.files['image']
+        filepath = os.path.join('uploads', uploaded_file.filename)
+        uploaded_file.save(filepath)
+        # Process the file or make a prediction here
+        return render_template('index.html', diagnosis="You're dying. Probably.")
+    return render_template('index.html')
+
 
     diagnosis = None
     quote = None

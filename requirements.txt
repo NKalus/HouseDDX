@@ -1,7 +1,6 @@
 absl-py==2.3.1
 astunparse==1.6.3
 blinker==1.9.0
-cached_property_1615209429212/work
 certifi==2025.8.3
 charset-normalizer==3.4.2
 click==8.1.8

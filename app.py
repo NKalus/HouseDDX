@@ -1,19 +1,19 @@
+from flask import Flask, render_template, request
+from werkzeug.utils import secure_filename
+from keras.applications.mobilenet_v2 import MobileNetV2, preprocess_input, decode_predictions
+from keras.preprocessing import image
 from PIL import Image
 import tensorflow as tf
-tf.config.set_visible_devices([], 'GPU')  # Force CPU-only mode on Render
 import os
 import random
 import numpy as np
-from flask import Flask, render_template, request
-from keras.applications.mobilenet_v2 import MobileNetV2, preprocess_input, decode_predictions
-from keras.preprocessing import image
-from tensorflow.keras.applications import MobileNetV2
 import traceback
 
-# --- Environment variables to prevent TensorFlow GPU issues on macOS ---
+# --- Environment variables to prevent GPU issues ---
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
 os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "python"
+tf.config.set_visible_devices([], 'GPU')
 
 # --- Flask setup ---
 app = Flask(__name__)
@@ -151,15 +151,22 @@ diagnosis_bank = {
     ]
 }
 
+# --- Image classification ---
 def classify_image(img_path):
-    img = image.load_img(img_path, target_size=(224, 224))
-    x = image.img_to_array(img)
-    x = np.expand_dims(x, axis=0)
-    x = preprocess_input(x)
-    preds = model.predict(x)
-    label = decode_predictions(preds, top=1)[0][0][1]
-    return label.lower()
+    try:
+        img = image.load_img(img_path, target_size=(224, 224))
+        x = image.img_to_array(img)
+        x = np.expand_dims(x, axis=0)
+        x = preprocess_input(x)
+        preds = model.predict(x)
+        label = decode_predictions(preds, top=1)[0][0][1]
+        return label.lower()
+    except Exception as e:
+        print(f"Classification error: {e}")
+        traceback.print_exc()
+        return "idiocy"
 
+# --- Tag mapper ---
 def map_to_tag(label):
     if random.random() < 0.07:
         return "idiocy"
@@ -176,11 +183,18 @@ def map_to_tag(label):
     else:
         return random.choice(list(diagnosis_bank.keys()))
 
+# --- Diagnosis generator ---
 def generate_diagnosis(img_path):
-    label = classify_image(img_path)
-    tag = map_to_tag(label)
-    return random.choice(diagnosis_bank[tag])
+    try:
+        label = classify_image(img_path)
+        tag = map_to_tag(label)
+        return random.choice(diagnosis_bank[tag])
+    except Exception as e:
+        print(f"Diagnosis generation error: {e}")
+        traceback.print_exc()
+        return "Diagnostic error. Likely idiocy."
 
+# --- Main route ---
 @app.route('/', methods=['GET', 'POST'])
 def index():
     diagnosis = None
@@ -196,14 +210,16 @@ def index():
 
     if request.method == 'POST' and 'image' in request.files:
         file = request.files['image']
-        if file.filename:
-            filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+        if file and file.filename:
+            filename = secure_filename(file.filename)
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(filepath)
             diagnosis = generate_diagnosis(filepath)
             quote = random.choice(quotes)
 
     return render_template('index.html', diagnosis=diagnosis, random_quote=quote)
 
+# --- App runner ---
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5050))
     app.run(host="0.0.0.0", port=port, debug=True)

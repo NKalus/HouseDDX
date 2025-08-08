@@ -1,5 +1,3 @@
-**render.yaml**
-```yaml
 services:
   - type: web
     name: house-ddx

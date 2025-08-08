@@ -32,7 +32,7 @@ protobuf==4.25.8
 Pygments==2.19.2
 requests==2.32.4
 rich==14.1.0
-six @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_six_1753199211/work
+six==1.16.0
 tensorboard==2.16.2
 tensorboard-data-server==0.7.2
 tensorflow==2.16.2

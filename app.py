@@ -155,7 +155,9 @@ diagnosis_bank = {
 }
 
 # --- Image classification ---
-file.save(filepath)
+uploaded_file = request.files['image']
+uploaded_file.save(filepath)
+
 img = Image.open(filepath)
 img.thumbnail((512, 512))  # Resize in-place
 img.save(filepath)

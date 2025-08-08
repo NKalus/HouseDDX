@@ -2,19 +2,23 @@ import os
 import random
 import numpy as np
 from flask import Flask, render_template, request
-from tensorflow.keras.applications.mobilenet_v2 import MobileNetV2, preprocess_input, decode_predictions
-from tensorflow.keras.preprocessing import image
+from keras.applications.mobilenet_v2 import MobileNetV2, preprocess_input, decode_predictions
+from keras.preprocessing import image
 
-# Disable GPU to prevent TensorFlow crashes on macOS
+# --- Environment variables to prevent TensorFlow GPU issues on macOS ---
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
+os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "python"
 
+# --- Flask setup ---
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
+# --- Load pre-trained model ---
 model = MobileNetV2(weights='imagenet')
 
-# Over-the-top satirical diagnosis bank
-
+# --- Diagnosis bank ---
 diagnosis_bank = {
     "rash": [
         "Hyperreactive dermoepidermal exuberance syndrome (a.k.a. your skin is being dramatic)",
@@ -45,7 +49,7 @@ diagnosis_bank = {
         "Venolymphatic ego retention (the arrogance won’t drain either)",
         "Passive-aggressive fluid accumulation",
         "Hydrospheric entitlement edema",
-        "Inflamed self-worth sacs (diagnosis made after checking your Twitter)",
+        "Inflamed self-worth sacs (diagnosed after checking your Twitter)",
         "Psychosocial bloat disorder",
         "Unsolicited opinion-based tissue expansion",
         "Whiny gland hypertrophy"
@@ -185,15 +189,16 @@ def index():
         "I'm not always miserable. Sometimes I'm asleep."
     ]
 
-    if request.method == 'POST':
-        if 'image' in request.files:
-            file = request.files['image']
-            if file.filename != '':
-                path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-                file.save(path)
-                diagnosis = generate_diagnosis(path)
-                quote = random.choice(quotes)
+    if request.method == 'POST' and 'image' in request.files:
+        file = request.files['image']
+        if file.filename:
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+            file.save(filepath)
+            diagnosis = generate_diagnosis(filepath)
+            quote = random.choice(quotes)
 
     return render_template('index.html', diagnosis=diagnosis, random_quote=quote)
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001, debug=True)
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5050))
+    app.run(host="0.0.0.0", port=port, debug=True)

@@ -9,6 +9,9 @@ import random
 import numpy as np
 import traceback
 
+import logging
+logging.basicConfig(level=logging.DEBUG)
+
 # --- Environment variables to prevent GPU issues ---
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
@@ -208,14 +211,23 @@ def index():
         "I'm not always miserable. Sometimes I'm asleep."
     ]
 
-    if request.method == 'POST' and 'image' in request.files:
-        file = request.files['image']
-        if file and file.filename:
-            filename = secure_filename(file.filename)
-            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(filepath)
-            diagnosis = generate_diagnosis(filepath)
-            quote = random.choice(quotes)
+    diagnosis = None
+    quote = None
+    quotes = [
+        "Everybody lies.",
+        ...
+    ]
+    try:
+        if request.method == 'POST' and 'image' in request.files:
+            file = request.files['image']
+            if file.filename:
+                filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+                file.save(filepath)
+                diagnosis = generate_diagnosis(filepath)
+                quote = random.choice(quotes)
+    except Exception as e:
+        diagnosis = f"Error: {str(e)}"
+        app.logger.exception("Diagnosis generation failed")
 
     return render_template('index.html', diagnosis=diagnosis, random_quote=quote)
 

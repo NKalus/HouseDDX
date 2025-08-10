@@ -3,77 +3,43 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <title>House DDX</title>
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/urllogo.png') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/urllogo.png') }}"/>
 
   <!-- Styles -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
-  <!-- Google Analytics (leave as-is if you already added this) -->
-  <!--
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-XXXXXXX');
-  </script>
-  -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
-  <!-- HERO: House image centered above title -->
-  <div class="hero">
-    <img
-      class="house-img"
-      src="{{ url_for('static', filename='img/house-md.png') }}"
-      alt="House"
-      decoding="async"
-      fetchpriority="high" />
-  </div>
-
-  <main class="wrap">
+  <!-- Hero section: House appears BEHIND via CSS ::before -->
+  <main class="hero">
     <h1>Upload an Image for House to Diagnose</h1>
 
     <form method="POST" action="/" enctype="multipart/form-data" class="controls">
       <label class="file">
         <input type="file" name="image" accept="image/*" required />
-        <span class="file-btn">Choose File</span>
-        <span class="file-name">No file chosen</span>
+        <span>Choose File</span>
       </label>
-
-      <button class="cta" type="submit">Differential Diagnosis… Go!</button>
+      <button type="submit" class="cta">Differential Diagnosis... Go!</button>
     </form>
 
     {% if diagnosis %}
     <section class="card">
       <h2>Diagnosis:</h2>
-      <p class="dx">{{ diagnosis }}</p>
-      {% if random_quote %}
-      <p class="quote">“{{ random_quote }}”</p>
-      {% endif %}
+      <p>{{ diagnosis }}</p>
     </section>
     {% endif %}
 
     <p class="disclaimer">Not medical advice. Obviously.</p>
   </main>
 
-  <!-- Wilson corner -->
-  <aside class="wilson-corner">
-    <img src="{{ url_for('static', filename='img/wilson.png') }}" alt="Wilson" />
-    <p>I too am on this website</p>
-  </aside>
-
-  <script>
-    // tiny helper so file label shows the filename
-    const input = document.querySelector('input[type="file"]');
-    const nameSpan = document.querySelector('.file-name');
-    if (input && nameSpan) {
-      input.addEventListener('change', () => {
-        nameSpan.textContent = input.files?.[0]?.name || 'No file chosen';
-      });
-    }
-  </script>
+  <!-- Wilson corner badge -->
+  <div class="wilson-corner" role="note" aria-label="Dr. Wilson cameo">
+    <img src="{{ url_for('static', filename='img/wilson.png') }}"
+         alt="Dr. Wilson" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+    <p class="wilson-caption" style="display:none">I too am on this website</p>
+  </div>
 </body>
 </html>

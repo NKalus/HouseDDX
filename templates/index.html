@@ -6,17 +6,19 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <!-- House image -->
-    <img src="{{ url_for('static', filename='house-md.png') }}" alt="House" class="house-img">
 
-    <!-- Main content -->
+    <!-- Big House Image -->
+    <img
+        class="house-img"
+        src="{{ url_for('static', filename='img/house-md.png') }}"
+        alt="House"
+    >
+
     <div class="container">
         <h1>Upload an Image for House to Diagnose</h1>
+
         <form method="POST" enctype="multipart/form-data">
-            <label class="file-label">
-                <input type="file" name="image" required>
-                <span>Choose File</span>
-            </label>
+            <input type="file" name="image" required>
             <button type="submit">Differential Diagnosis... Go!</button>
         </form>
 
@@ -30,10 +32,11 @@
         <p class="disclaimer">Not medical advice. Obviously.</p>
     </div>
 
-    <!-- Wilson image -->
-    <div class="wilson">
-        <img src="{{ url_for('static', filename='wilson.png') }}" alt="Wilson">
+    <!-- Wilson Corner -->
+    <div class="wilson-corner">
+        <img src="{{ url_for('static', filename='img/wilson.png') }}" alt="Wilson">
         <p>I too am on this website</p>
     </div>
+
 </body>
 </html>

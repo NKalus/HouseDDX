@@ -1,86 +1,45 @@
-/* General body styling */
 body {
-    font-family: Arial, sans-serif;
-    background: #111 url('/static/img/house-md.png') no-repeat center center;
-    background-size: contain;
-    color: #fff;
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  background-color: #111;
+  color: white;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  text-align: center;
 }
 
-/* Main container */
-.container {
-    background: rgba(0, 0, 0, 0.75);
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
-    max-width: 500px;
-    width: 90%;
-    text-align: center;
-    backdrop-filter: blur(4px);
+.wrap {
+  margin-top: 50px;
 }
 
-/* Headings */
-h1 {
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
+.card {
+  margin-top: 20px;
 }
 
-h2 {
-    margin-top: 1rem;
-    font-size: 1.4rem;
-    color: #ffcc00;
-}
-
-/* File input */
-input[type="file"] {
-    display: block;
-    margin: 1rem auto;
-    padding: 0.5rem;
-    border-radius: 6px;
-    border: none;
-    background: #222;
-    color: #fff;
-    cursor: pointer;
-}
-
-input[type="file"]::-webkit-file-upload-button {
-    background: #ffcc00;
-    color: #000;
-    padding: 0.4rem 0.8rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-input[type="file"]::-webkit-file-upload-button:hover {
-    background: #e6b800;
-}
-
-/* Button */
-button {
-    background: #ffcc00;
-    color: #000;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 6px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-button:hover {
-    background: #e6b800;
-}
-
-/* Diagnosis box */
 .result {
-    margin-top: 1.5rem;
-    padding: 1rem;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.1);
+  margin-top: 30px;
+  background: #222;
+  padding: 20px;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+/* Wilson Easter Egg */
+.wilson-corner {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-style: italic;
+  z-index: 9999;
+}
+
+.wilson-corner img {
+  width: 70px;
+  height: auto;
+  border-radius: 6px;
+  display: block;
+  margin: 0 auto 4px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
 }

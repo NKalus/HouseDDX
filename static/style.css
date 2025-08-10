@@ -21,12 +21,18 @@ form {
     margin-top: 15px;
 }
 
-input[type="file"] {
-    background-color: #222;
-    color: white;
-    border: none;
-    padding: 8px;
+.file-label {
+    background-color: gold;
+    color: black;
+    padding: 10px 20px;
     border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.file-label input {
+    display: none;
 }
 
 button {
@@ -40,7 +46,8 @@ button {
     cursor: pointer;
 }
 
-button:hover {
+button:hover,
+.file-label:hover {
     background-color: orange;
 }
 
@@ -61,6 +68,12 @@ button:hover {
     display: inline-block;
 }
 
+.disclaimer {
+    margin-top: 10px;
+    font-size: 0.85em;
+    color: #ccc;
+}
+
 .wilson {
     position: fixed;
     bottom: 10px;
@@ -74,4 +87,12 @@ button:hover {
     width: 60px;
     height: auto;
     border-radius: 6px;
+}
+
+/* Responsive: shrink House image on mobile */
+@media (max-width: 600px) {
+    .house-img {
+        max-width: 250px;
+        top: 5%;
+    }
 }

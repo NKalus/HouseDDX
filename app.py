@@ -135,7 +135,7 @@ diagnosis_bank = {
         "Hippocampal inflammation due to Reddit overdose",
         "Recurring psychosomatic derp",
         "Cortical smug overload",
-        "Idiopathic synthetic glandular hyperplasia (you literally have no brain cells)"",
+        "Idiopathic synthetic glandular hyperplasia (you literally have no brain cells)",
         "You have a cold.",
         ],
 }

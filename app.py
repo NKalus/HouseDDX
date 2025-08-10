@@ -7,7 +7,7 @@
 # │   ├── index.html
 # │   └── error.html
 # └── static/
-#   -  └── style.css
+#     └── style.css
 
 from __future__ import annotations
 
@@ -65,7 +65,7 @@ diagnosis_bank = {
         "Contact-induced stupidity pox",
         "Subdermal drama eruption (your skin can't handle your awful personality)",
         "Multifocal epidermal tantrum disorder (too much video game rage)",
-        "Heat-seeking dermatitis (take a cold shower and eat a pastrami sandwish and you'll be fine by morning",
+        "Heat-seeking dermatitis (take a cold shower and eat a pastrami sandwish and you'll be fine by morning)",
         "Emotionally unstable skin syndrome (your ex poisoned you)",
         "Neurotic scratch cycle disorder (you are part orangutan. You never met your father did you?)",
         "Frantic blister regression disorder (your skin tried to cancel itself)",
@@ -77,7 +77,7 @@ diagnosis_bank = {
         "Ballooning of the moron lobe",
         "Aquapocalyptic infiltration disorder (your body is drowning itself. We need to blow-dry your spinal cord.)",
         "Venolymphatic dairy retention (your veins have milky blood)",
-        "Passive-aggressive immuno-accumulation (your immune system only likes you as a friend", 
+        "Passive-aggressive immuno-accumulation (your immune system only likes you as a friend)",
     ],
     "bruise": [
         "Contusional dumbassity (you don't have cancer you're an idiot with a bruise)",
@@ -94,18 +94,18 @@ diagnosis_bank = {
     ],
     "growth": [
         "Benign attention-seeking pseudotumor (you don't have cancer you moron it's a pimple. Buy some acne cream)",
-        "Overcompensation fibroid (you have cancer from too many boner pills",
-        "Delusionoma (idk just go away I need to go bother Cuddy (she took away my cocaine spoon, totally uncalled for)",
+        "Overcompensation fibroid (you have cancer from too many boner pills)",
+        "Delusionoma (idk just go away I need to go bother Cuddy (she took away my cocaine spoon, totally uncalled for))",
         "Hope cyst with a low probability of fulfillment",
         "Cognitive tumor of bad decisions (you have idiot cancer, you need a brain transplant)",
         "Overconfidence blob (resistant to feedback)",
-        "Stagnant ambition carcinoma (you have cancer from the resin on your unemployment checks)"
+        "Stagnant ambition carcinoma (you have cancer from the resin on your unemployment checks)",
     ],
     "burn": [
         "First-degree idiocy scorch",
         "Consequential thermogenic moron disease",
         "Pyrodramatitis (ignited by emotional combustion)",
-        "Open-flame barbeculopathy (your hot dog had granulomatosis",
+        "Open-flame barbeculopathy (your hot dog had granulomatosis)",
         "Moron-induced keratinolysis",
         "Stupid Baby Syndrome (you need to have your skin removed)",
         "Heartbreak-induced thermal inflammation (go sleep with wilson)",
@@ -116,7 +116,7 @@ diagnosis_bank = {
         "pseudonodulic IQ-deficiency growth",
         "Metaphysical Meatball disease. (We need to remove your skin)",
         "Psychosomatic flesh bundle (you're high go home)",
-        "Moron-induced granuloma (You have 6 months to live",
+        "Moron-induced granuloma (You have 6 months to live)",
     ],
     "idiocy": [
         "Cerebral decelerosis (your thoughts run Windows 95)",
@@ -137,7 +137,7 @@ diagnosis_bank = {
         "Cortical smug overload",
         "Idiopathic synthetic glandular hyperplasia (you literally have no brain cells)",
         "You have a cold.",
-        ],
+    ],
 }
 
 # ------------------------------

@@ -207,6 +207,22 @@ def _ensure_model():
         _load_img = kimage.load_img
         _img_to_array = kimage.img_to_array
         log.info("Model loaded.")
+# ---- non-blocking warmup (Flask 3 compatible) ----
+_warm_started = False
+
+def _start_warmup_once():
+    global _warm_started
+    if not _warm_started:
+        _warm_started = True
+        threading.Thread(target=_ensure_model, daemon=True).start()
+
+# kick it off at import so cold starts don’t block first request
+_start_warmup_once()
+
+@app.get("/__warmup")
+def __warmup():
+    _start_warmup_once()
+    return {"warming": True}
 
 # ------------------------------
 # Helpers

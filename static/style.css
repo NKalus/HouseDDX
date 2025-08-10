@@ -1,45 +1,53 @@
-/* General reset */
+/* General page setup */
 body {
-    margin: 0;
-    padding: 0;
     background-color: #0f0f0f;
     color: white;
     font-family: Arial, sans-serif;
     text-align: center;
+    margin: 0;
 }
 
-/* House hero image */
-.house-hero img {
+/* Main container */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* House image */
+.house-img {
     max-width: 450px;
     height: auto;
-    margin-top: 30px;
+    margin-bottom: 20px;
 }
 
 @media (max-width: 600px) {
-    .house-hero img {
+    .house-img {
         max-width: 300px;
     }
 }
 
-/* Main content area */
-.content {
-    margin-top: 20px;
+/* Headline */
+h1 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
 }
 
-/* File input and button */
+/* Form styling */
 form {
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 10px;
-    margin-top: 15px;
+    align-items: center;
 }
 
 input[type="file"] {
-    background: #222;
-    color: white;
+    background-color: #222;
     padding: 8px;
     border-radius: 4px;
+    color: white;
 }
 
 button {
@@ -56,13 +64,12 @@ button:hover {
     background-color: #ffdb4d;
 }
 
-/* Diagnosis box */
-.diagnosis-box {
+/* Diagnosis output */
+.diagnosis {
+    margin-top: 20px;
     background-color: #1a1a1a;
     padding: 15px;
-    margin-top: 20px;
     border-radius: 8px;
-    display: inline-block;
     max-width: 80%;
 }
 
@@ -71,23 +78,4 @@ button:hover {
     font-size: 0.9em;
     color: #bbb;
     margin-top: 15px;
-}
-
-/* Wilson bottom-right corner */
-.wilson-corner {
-    position: fixed;
-    right: 10px;
-    bottom: 10px;
-    text-align: center;
-}
-
-.wilson-corner img {
-    width: 100px;
-    height: auto;
-    display: block;
-}
-
-.wilson-corner p {
-    font-size: 0.8em;
-    margin-top: 5px;
 }

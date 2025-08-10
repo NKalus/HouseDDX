@@ -6,7 +6,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <img src="{{ url_for('static', filename='img/house.png') }}" alt="House" class="house-side">
+    <!-- Big House image -->
+    <img src="{{ url_for('static', filename='img/house.png') }}" alt="House" class="house-bg">
 
     <div class="container">
         <h1>Upload an Image for House to Diagnose</h1>
@@ -14,12 +15,14 @@
             <input type="file" name="image" required>
             <button type="submit" class="yellow-btn">Differential Diagnosis... Go!</button>
         </form>
+
         {% if diagnosis %}
-            <div class="result">
-                <h2>Diagnosis:</h2>
-                <p>{{ diagnosis }}</p>
-            </div>
+        <div class="result">
+            <h2>Diagnosis:</h2>
+            <p>{{ diagnosis }}</p>
+        </div>
         {% endif %}
+
         <p class="disclaimer">Not medical advice. Obviously.</p>
     </div>
 </body>

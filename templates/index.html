@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>House DDX</title>
 
-  <!-- Google tag (gtag.js) -->
+  <!-- Google Analytics (leave as-is if you've already set it up) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-H3S176JZZR"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -13,30 +14,39 @@
     gtag('config', 'G-H3S176JZZR');
   </script>
 
-  <title>House DDX</title>
-  <link rel="stylesheet" href="/static/style.css" />
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/urllogo.png') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/urllogo.png') }}" />
 </head>
 <body>
   <main class="wrap">
     <h1>Upload an Image for House to Diagnose</h1>
+
     <form method="POST" action="/" enctype="multipart/form-data" class="card">
       <input type="file" name="image" accept="image/*" required />
       <button type="submit">Differential Diagnosis... Go!</button>
     </form>
 
     {% if diagnosis %}
-    <div class="result">
-      <h2>Diagnosis:</h2>
-      <p>{{ diagnosis }}</p>
-    </div>
+    <section class="card result">
+      <h2>Differential Diagnosis</h2>
+      <p class="dx">{{ diagnosis }}</p>
+      {% if random_quote %}
+        <p class="quote">“{{ random_quote }}”</p>
+      {% endif %}
+      <a class="again" href="/">Run another</a>
+    </section>
     {% endif %}
   </main>
 
-  <!-- Wilson Easter Egg -->
+  <!-- Wilson Easter Egg (bottom-right) -->
   <div class="wilson-corner">
-    <img src="{{ url_for('static', filename='img/wilson.png') }}" alt="Dr. Wilson">
-    <p>I too am on this website</p>
+    <img src="{{ url_for('static', filename='img/wilson.png') }}" alt="Dr. Wilson" />
+    <p><em>I too am on this website</em></p>
+  </div>
+
+  <!-- House Easter Egg (top-left) -->
+  <div class="house-corner">
+    <img src="{{ url_for('static', filename='img/house-md.png') }}" alt="Dr. House" />
   </div>
 </body>
 </html>

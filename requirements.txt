@@ -1,9 +1,10 @@
 Flask==3.0.3
 gunicorn==21.2.0
 Pillow==11.3.0
-numpy==1.24.3
+numpy==1.24.4
 protobuf==3.20.3
 
-tensorflow==2.13.0;platform_system!="Darwin" or platform_machine!="arm64"
-tensorflow-macos==2.13.0;platform_system=="Darwin" and platform_machine=="arm64"
-tensorflow-metal==1.1.*;platform_system=="Darwin" and platform_machine=="arm64"
+# TensorFlow: Linux (Render) vs Apple Silicon (your Mac)
+tensorflow==2.13.0; platform_system != "Darwin" or platform_machine != "arm64"
+tensorflow-macos==2.13.0; platform_system == "Darwin" and platform_machine == "arm64"
+tensorflow-metal==1.1.*; platform_system == "Darwin" and platform_machine == "arm64"

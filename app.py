@@ -342,11 +342,6 @@ def server_error(e):
     return render_template("error.html", message="Internal error. The ducklings are investigating."), 500
 from threading import Thread
 
-@app.before_first_request
-def _warmup_async():
-    # load the TF model without blocking the first request
-    Thread(target=_ensure_model, daemon=True).start()
-
 @app.get("/__warmup")
 def __warmup():
     _ = Thread(target=_ensure_model, daemon=True).start()

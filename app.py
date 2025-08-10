@@ -74,7 +74,7 @@ diagnosis_bank = {
         "Interstitial idiopathic puffification disorder (you have fish DNA)",
         "Chronic edematosis of the hypochondrium (your brain is on fire)",
         "Pseudolymphatic egomania (your ego is retaining water)",
-        "Ballooning of the moron lobe
+        "Ballooning of the moron lobe",
         "Aquapocalyptic infiltration disorder (your body is drowning itself. We need to blow-dry your spinal cord.)",
         "Venolymphatic dairy retention (your veins have milky blood)",
         "Passive-aggressive immuno-accumulation (your immune system only likes you as a friend", 

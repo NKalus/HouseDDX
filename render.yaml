@@ -3,7 +3,7 @@ services:
     name: house-ddx
     runtime: python
     plan: free
-    buildCommand: "pip install -r requirements.txt"
+    buildCommand: "python -m pip install --upgrade pip && pip install -r requirements.txt"
     startCommand: "gunicorn -w 2 -k gthread -t 120 app:app"
     envVars:
       - key: PYTHON_VERSION

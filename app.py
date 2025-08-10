@@ -102,7 +102,7 @@ diagnosis_bank = {
         "Stagnant ambition carcinoma (you have cancer from the resin on your unemployment checks)"
     ],
     "burn": [
-        "First-degree idiocy scorch
+        "First-degree idiocy scorch",
         "Consequential thermogenic moron disease",
         "Pyrodramatitis (ignited by emotional combustion)",
         "Open-flame barbeculopathy (your hot dog had granulomatosis",

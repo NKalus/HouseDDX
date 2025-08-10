@@ -216,13 +216,12 @@ def _start_warmup_once():
         _warm_started = True
         threading.Thread(target=_ensure_model, daemon=True).start()
 
-# kick it off at import so cold starts don’t block first request
-_start_warmup_once()
 
 @app.get("/__warmup")
-def __warmup():
+def warmup():
     _start_warmup_once()
     return {"warming": True}
+
 
 # ------------------------------
 # Helpers

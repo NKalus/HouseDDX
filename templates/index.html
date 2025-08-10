@@ -1,34 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>House DDX</title>
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='urllogo.png') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>House DDX</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png"
+        href="{{ url_for('static', filename='img/urllogo.png') }}" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
-    <div class="container">
-        <h1>Upload an Image for House to Diagnose</h1>
-        <form method="POST" enctype="multipart/form-data">
-            <input type="file" name="image" required>
-            <button type="submit">Differential Diagnosis... Go!</button>
-        </form>
-        {% if diagnosis %}
-            <div class="result">
-                <h2>Diagnosis:</h2>
-                <p>{{ diagnosis }}</p>
-            </div>
-        {% endif %}
-        <p class="disclaimer">Not medical advice. Obviously.</p>
-    </div>
+  <main class="wrap">
+    <!-- Decorative House image (sits behind the UI) -->
+    <img
+      class="hero-house"
+      src="{{ url_for('static', filename='img/house-md.png') }}"
+      alt=""
+      aria-hidden="true"
+      loading="eager"
+    />
 
-    <!-- House behind content -->
-    <img src="{{ url_for('static', filename='img/house-md.png') }}" alt="House" class="house-bg">
+    <h1>Upload an Image for House to Diagnose</h1>
 
-    <!-- Wilson bottom right -->
-    <a href="#" class="wilson-link" title="Wilson">
-        <img src="{{ url_for('static', filename='img/wilson.png') }}" alt="Wilson" class="wilson-img">
-    </a>
+    <form method="POST" action="/" enctype="multipart/form-data" class="card">
+      <input type="file" name="image" accept="image/*" required />
+      <button type="submit">Differential Diagnosis... Go!</button>
+    </form>
+
+    <p class="disclaimer">Not medical advice. Obviously.</p>
+  </main>
+
+  <!-- Wilson corner -->
+  <div class="wilson-corner">
+    <img src="{{ url_for('static', filename='img/wilson.png') }}" alt="Wilson" />
+    <p>I too am on this website</p>
+  </div>
 </body>
 </html>

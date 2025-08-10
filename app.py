@@ -9,16 +9,12 @@
 # └── static/
 #     └── style.css
 
-# ------------------------------
-# app.py
-# ------------------------------
 from __future__ import annotations
 
 # --- keep TF tame on tiny dynos BEFORE importing it ---
 import os
 os.environ.setdefault("TF_NUM_INTEROP_THREADS", "1")
 os.environ.setdefault("TF_NUM_INTRAOP_THREADS", "1")
-
 os.environ.setdefault("CUDA_VISIBLE_DEVICES", "-1")
 os.environ.setdefault("TF_ENABLE_ONEDNN_OPTS", "0")
 os.environ.setdefault("PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION", "python")
@@ -38,13 +34,13 @@ import numpy as np
 
 app = Flask(__name__)
 
+# Non-blocking warmup on first request
 @app.before_first_request
 def _warm_model_async():
     try:
         threading.Thread(target=_ensure_model, daemon=True).start()
     except Exception:
         pass
-
 
 app.config.update(
     SECRET_KEY=os.getenv("SECRET_KEY", "dev"),
@@ -61,106 +57,66 @@ log = logging.getLogger("house-ddx")
 # ------------------------------
 diagnosis_bank = {
     "rash": [
-        "Hyperreactive dermoepidermal exuberance syndrome (a.k.a. your skin is being dramatic)",
-        "Vesiculopathic keratinocyte rebellion (your skin cells unionized and went on strike)",
+        "Hyperreactive dermoepidermal exuberance syndrome (your skin is being an idior)",
+        "Vesiculopathic keratinocyte rebellion (your skin cells are evil)",
         "Transient necrotizing flambodermatitis (because normal rashes are too mainstream)",
-        "Autoimmune blistering with photophobic angst (edgy and light-sensitive)",
-        "Idiopathic itchosaurus complex (science meets imaginary dinosaur)",
-        "Contact-induced stupidity pox (possibly from hugging people who say 'I'm not a doctor, but...')",
-        "Subdermal drama eruption (your skin can't handle your personality)",
-        "Dermal overreaction syndrome (may be contagious on social media)",
-        "Multifocal epidermal tantrum disorder (every pore is throwing a fit)",
-        "Heat-seeking dermatitis with zero chill",
-        "Emotionally unstable skin syndrome (diagnosed by your ex)",
-        "Pseudoallergic dermal flailing (an allergic reaction to your own BS)",
-        "Neurotic scratch cycle disorder (itch, scratch, regret, repeat)",
-        "Localized hypersensitivity to your own nonsense",
+        "Autoimmune blistering with photophobic angst (your instagram sucks)",
+        "Idiopathic itchosaurus complex (you are half-dinosaur)",
+        "Contact-induced stupidity pox",
+        "Subdermal drama eruption (your skin can't handle your awful personality)",
+        "Multifocal epidermal tantrum disorder (too much video game rage)",
+        "Heat-seeking dermatitis (take a cold shower and eat a pastrami sandwish and you'll be fine by morning",
+        "Emotionally unstable skin syndrome (your ex poisoned you)",
+        "Neurotic scratch cycle disorder (you are part orangutan. You never met your father did you?)",
         "Frantic blister regression disorder (your skin tried to cancel itself)",
     ],
     "swelling": [
-        "Inflammatory bloatosis maximus (your tissues are auditioning for a Michelin Man reboot)",
-        "Interstitial idiopathic puffification disorder (cause: unknown, swelling: undeniable)",
-        "Tissue rebellion syndrome (they've unionized and demand less sodium)",
-        "Chronic edematosis of the hypochondrium (you're 40% fluid, 60% paranoia)",
+        "Interstitial idiopathic puffification disorder (you have fish DNA)",
+        "Chronic edematosis of the hypochondrium (your brain is on fire)",
         "Pseudolymphatic egomania (your ego is retaining water)",
-        "Ballooning of the moron lobe (not a tumor, just a poor life choice made physical)",
-        "Swellomatosis of the facial embarrassment zone",
-        "Aquapocalyptic infiltration disorder (you're drowning from the inside out)",
-        "Venolymphatic ego retention (the arrogance won’t drain either)",
-        "Passive-aggressive fluid accumulation",
-        "Hydrospheric entitlement edema",
-        "Inflamed self-worth sacs (diagnosed after checking your Twitter)",
-        "Psychosocial bloat disorder",
-        "Unsolicited opinion-based tissue expansion",
-        "Whiny gland hypertrophy",
+        "Ballooning of the moron lobe
+        "Aquapocalyptic infiltration disorder (your body is drowning itself. We need to blow-dry your spinal cord.)",
+        "Venolymphatic dairy retention (your veins have milky blood)",
+        "Passive-aggressive immuno-accumulation (your immune system only likes you as a friend", 
     ],
     "bruise": [
-        "Contusional dumbassity (obtained by walking into a 'Pull' door marked 'Push')",
-        "Capillary fragility of the terminally clumsy",
-        "Ecchymotic memory recall lesion (a bruise triggered by remembering your ex)",
-        "Iatrogenic clumsopathy (self-inflicted, but you’ll still blame the doctor)",
-        "Blunt force irony syndrome",
-        "Spontaneous thrombopurpuric embarrassment",
+        "Contusional dumbassity (you don't have cancer you're an idiot with a bruise)",
+        "Alcohol-induced capillary vasovagal fragility",
+        "Ecchymotic memory recall lesion (Try to back with your ex)",
+        "Iatrogenic apathy (I'm playing my gameboy. Go away)",
         "Shame compression under skin (emotional bruising now visible to all)",
         "Denial-induced discolorative patterning",
         "Platelet-induced regret patch",
         "Vascular apology formation (the bruise says what words never will)",
         "Drama imprint syndrome",
         "Purpura of avoidable stupidity",
-        "Trauma seepage of the brainless variety",
-        "Sympathy contusion cluster",
-        "Impulsive chaos bruise",
+        "Trauma seepage of the brainless variety (you're a drama queen. And an idiot)",
     ],
     "growth": [
-        "Benign attention-seeking pseudotumor (it’s not dangerous, just annoying—like you)",
-        "Narcissistic nodularity (diagnosed via selfie frequency)",
-        "Mesenchymal unresolved-issue mass",
-        "Superiority complex encapsulated in soft tissue",
-        "Proliferation of smug cells",
-        "Overcompensation fibroid",
-        "Delusionoma, slow-growing but terminal at parties",
+        "Benign attention-seeking pseudotumor (you don't have cancer you moron it's a pimple. Buy some acne cream)",
+        "Overcompensation fibroid (you have cancer from too many boner pills",
+        "Delusionoma (idk just go away I need to go bother Cuddy (she took away my cocaine spoon, totally uncalled for)",
         "Hope cyst with a low probability of fulfillment",
-        "Cognitive tumor of bad decisions",
-        "Self-diagnosed reality lump",
+        "Cognitive tumor of bad decisions (you have idiot cancer, you need a brain transplant)",
         "Overconfidence blob (resistant to feedback)",
-        "Unbiopsyable meat mystery (not FDA approved)",
-        "Stagnant ambition carcinoma",
-        "Ego-noma of the low self-esteem quadrant",
-        "Nonpalpable potential node",
+        "Stagnant ambition carcinoma (you have cancer from the resin on your unemployment checks)"
     ],
     "burn": [
-        "First-degree idiocy scorch (because you touched it after saying 'I think it's cooled down')",
-        "Consequential thermogenic karma",
-        "Superficial ego-melting rash",
-        "Dermal nuking via kitchen curiosity",
+        "First-degree idiocy scorch
+        "Consequential thermogenic moron disease",
         "Pyrodramatitis (ignited by emotional combustion)",
-        "Open-flame barbeculopathy",
-        "Steam-powered blister bloom",
-        "Sarcasm-induced keratinolysis",
-        "Mild stupidity singe",
-        "Sunburn of the chronically unprepared",
-        "SPF-0 decision blister",
-        "Microwave hubris syndrome",
-        "Heartbreak-induced thermal inflammation",
-        "Toaster duel fallout",
-        "Curiosity burn unit admission pending",
+        "Open-flame barbeculopathy (your hot dog had granulomatosis",
+        "Moron-induced keratinolysis",
+        "Stupid Baby Syndrome (you need to have your skin removed)",
+        "Heartbreak-induced thermal inflammation (go sleep with wilson)",
     ],
     "lump": [
-        "Lump of existential dread (hard to the touch, harder to explain)",
-        "Guilt gland hyperplasia",
-        "Bump of unresolved baggage",
-        "Localized ambition avoidance cyst",
-        "Tactile regret deposit",
-        "Encapsulated WTFoma (we don't know either)",
-        "Blob of medical confusion",
-        "Spontaneous disappointment tumor",
-        "Oopsie glandular prolapse",
-        "Self-worth pseudonodule",
-        "Embarrassoma (it's watching you back)",
-        "Procrastination growth, chronic",
-        "Meatball of metaphysical concern",
-        "Psychosomatic flesh bundle",
-        "Snark-induced granuloma",
+        "Moron gland hyperplasia",
+        "Spontaneous stupid tumor",
+        "pseudonodulic IQ-deficiency growth",
+        "Metaphysical Meatball disease. (We need to remove your skin)",
+        "Psychosomatic flesh bundle (you're high go home)",
+        "Moron-induced granuloma (You have 6 months to live",
     ],
     "idiocy": [
         "Cerebral decelerosis (your thoughts run Windows 95)",
@@ -174,16 +130,14 @@ diagnosis_bank = {
         "Meme-induced logical infarct",
         "Memory hole echo chamber disorder",
         "Dunning-Krugerosis, advanced stage",
-        "Terminal intellect bypass (brain online, user offline)",
+        "Terminal intellect disorder",
         "Logical non-compliance syndrome",
         "Hippocampal inflammation due to Reddit overdose",
         "Recurring psychosomatic derp",
         "Cortical smug overload",
-        "Hyperactive B.S. synthesis gland",
-        "Moronic viral content exposure",
-        "One-sided logic deflation",
-        "Misinformational brain rot",
-    ],
+        "Idiopathic synthetic glandular hyperplasia (you literally have no brain cells)"",
+        "You have a cold.",
+        ],
 }
 
 # ------------------------------
@@ -218,31 +172,27 @@ def _ensure_model():
         _load_img = kimage.load_img
         _img_to_array = kimage.img_to_array
         log.info("Model loaded.")
-# ---- non-blocking warmup (Flask 3 compatible) ----
-_warm_started = False
 
+# Optional: manual warm route to pre-load the model
+_warm_started = False
 def _start_warmup_once():
     global _warm_started
     if not _warm_started:
         _warm_started = True
         threading.Thread(target=_ensure_model, daemon=True).start()
 
-
 @app.get("/__warmup")
 def warmup():
     _start_warmup_once()
     return {"warming": True}
-
 
 # ------------------------------
 # Helpers
 # ------------------------------
 ALLOWED_EXTS = {"png", "jpg", "jpeg", "webp"}
 
-
 def _allowed(filename: str) -> bool:
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTS
-
 
 def classify_image(img_path: str) -> str:
     try:
@@ -256,10 +206,8 @@ def classify_image(img_path: str) -> str:
         return label.lower()
     except Exception as e:
         log.warning("Classification error: %s", e)
-        log.error("Diagnosis generation error: %s", e)
         log.debug("\n" + traceback.format_exc())
-        return "Diagnostic error. Likely idiocy.", random.choice(QUOTES)
-
+        return "idiocy"
 
 def map_to_tag(label: str) -> str:
     try:
@@ -279,7 +227,6 @@ def map_to_tag(label: str) -> str:
     except Exception:
         return "idiocy"
 
-
 QUOTES = [
     "Everybody lies.",
     "It's never lupus.",
@@ -287,7 +234,6 @@ QUOTES = [
     "If you talk to God, you're religious. If God talks to you, you're psychotic.",
     "I take risks, sometimes patients die. But not taking risks causes more deaths.",
 ]
-
 
 def generate_diagnosis(img_path: Optional[str]) -> tuple[str, str]:
     try:
@@ -299,14 +245,12 @@ def generate_diagnosis(img_path: Optional[str]) -> tuple[str, str]:
         log.debug("\n" + traceback.format_exc())
         return "Diagnostic error. Likely idiocy.", random.choice(QUOTES)
 
-
 # ------------------------------
 # Routes
 # ------------------------------
 @app.get("/")
 def home_get():
     return render_template("index.html")
-
 
 @app.post("/")
 @app.post("/diagnose")
@@ -335,28 +279,18 @@ def home_post():
     dx, quote = generate_diagnosis(path)
     return render_template("index.html", diagnosis=dx, random_quote=quote)
 
-
 @app.get("/__health")
 def health():
     return {"ok": True}
-
 
 @app.errorhandler(400)
 def bad_request(e):
     return render_template("error.html", message=str(e)), 400
 
-
 @app.errorhandler(500)
 def server_error(e):
     log.exception("500 error: %s", e)
     return render_template("error.html", message="Internal error. The ducklings are investigating."), 500
-from threading import Thread
-
-@app.get("/__warmup")
-def __warmup():
-    _ = Thread(target=_ensure_model, daemon=True).start()
-    return {"warming": True}
-
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5001)), debug=True)

@@ -1,52 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>House DDX</title>
-
-  <!-- Google Analytics (leave as-is if you've already set it up) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H3S176JZZR"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-H3S176JZZR');
-  </script>
-
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/urllogo.png') }}" />
+    <meta charset="UTF-8">
+    <title>House DDX</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <main class="wrap">
-    <h1>Upload an Image for House to Diagnose</h1>
+    <!-- House Image -->
+    <img src="{{ url_for('static', filename='house-md.png') }}" alt="House" class="house-img">
 
-    <form method="POST" action="/" enctype="multipart/form-data" class="card">
-      <input type="file" name="image" accept="image/*" required />
-      <button type="submit">Differential Diagnosis... Go!</button>
-    </form>
+    <!-- Main container -->
+    <div class="container">
+        <h1>Upload an Image for House to Diagnose</h1>
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="image" required>
+            <button type="submit">Differential Diagnosis... Go!</button>
+        </form>
 
-    {% if diagnosis %}
-    <section class="card result">
-      <h2>Differential Diagnosis</h2>
-      <p class="dx">{{ diagnosis }}</p>
-      {% if random_quote %}
-        <p class="quote">“{{ random_quote }}”</p>
-      {% endif %}
-      <a class="again" href="/">Run another</a>
-    </section>
-    {% endif %}
-  </main>
+        {% if diagnosis %}
+        <div class="result">
+            <h2>Diagnosis:</h2>
+            <p>{{ diagnosis }}</p>
+        </div>
+        {% endif %}
 
-  <!-- Wilson Easter Egg (bottom-right) -->
-  <div class="wilson-corner">
-    <img src="{{ url_for('static', filename='img/wilson.png') }}" alt="Dr. Wilson" />
-    <p><em>I too am on this website</em></p>
-  </div>
+        <p class="disclaimer">Not medical advice. Obviously.</p>
+    </div>
 
-  <!-- House Easter Egg (top-left) -->
-  <div class="house-corner">
-    <img src="{{ url_for('static', filename='img/house-md.png') }}" alt="Dr. House" />
-  </div>
+    <!-- Wilson Image -->
+    <div class="wilson">
+        <img src="{{ url_for('static', filename='wilson.png') }}" alt="Wilson">
+        <p>I too am on this website</p>
+    </div>
 </body>
 </html>

@@ -13,13 +13,9 @@
 </head>
 <body>
 
-    <!-- House image big and centered -->
-    <div class="house-hero">
-        <img src="{{ url_for('static', filename='img/house-md.png') }}" alt="House">
-    </div>
+    <div class="container">
+        <img src="{{ url_for('static', filename='img/house-md.png') }}" alt="House" class="house-img">
 
-    <!-- Main content -->
-    <main class="content">
         <h1>Upload an Image for House to Diagnose</h1>
 
         <form method="POST" enctype="multipart/form-data">
@@ -28,19 +24,13 @@
         </form>
 
         {% if diagnosis %}
-        <div class="diagnosis-box">
+        <div class="diagnosis">
             <h2>Diagnosis:</h2>
             <p>{{ diagnosis }}</p>
         </div>
         {% endif %}
 
         <p class="disclaimer">Not medical advice. Obviously.</p>
-    </main>
-
-    <!-- Wilson in the corner -->
-    <div class="wilson-corner">
-        <img src="{{ url_for('static', filename='img/wilson.png') }}" alt="Wilson">
-        <p>I too am on this website</p>
     </div>
 
 </body>

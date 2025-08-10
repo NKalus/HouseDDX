@@ -27,6 +27,7 @@ h1 {
     cursor: pointer;
     font-weight: bold;
     border-radius: 6px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .yellow-btn:hover {
@@ -57,23 +58,4 @@ h1 {
     transform: translateY(-50%);
     height: 80vh;
     z-index: 1;
-}
-
-/* Wilson bottom right */
-.wilson-corner {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    text-align: center;
-    font-family: Arial, sans-serif;
-    background-color: rgba(0, 0, 0, 0.6);
-    padding: 6px;
-    border-radius: 8px;
-    color: white;
-    width: 120px;
-}
-
-.wilson-corner img {
-    width: 100%;
-    border-radius: 4px;
 }

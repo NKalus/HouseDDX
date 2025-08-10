@@ -1,37 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>House DDX</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>House DDX</title>
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/urllogo.png') }}">
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/urllogo.png') }}">
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <!-- Styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+  <!-- Google Analytics (leave as-is if you already added this) -->
+  <!--
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXX');
+  </script>
+  -->
 </head>
 <body>
+  <!-- HERO: House image centered above title -->
+  <div class="hero">
+    <img
+      class="house-img"
+      src="{{ url_for('static', filename='img/house-md.png') }}"
+      alt="House"
+      decoding="async"
+      fetchpriority="high" />
+  </div>
 
-    <div class="container">
-        <img src="{{ url_for('static', filename='img/house-md.png') }}" alt="House" class="house-img">
+  <main class="wrap">
+    <h1>Upload an Image for House to Diagnose</h1>
 
-        <h1>Upload an Image for House to Diagnose</h1>
+    <form method="POST" action="/" enctype="multipart/form-data" class="controls">
+      <label class="file">
+        <input type="file" name="image" accept="image/*" required />
+        <span class="file-btn">Choose File</span>
+        <span class="file-name">No file chosen</span>
+      </label>
 
-        <form method="POST" enctype="multipart/form-data">
-            <input type="file" name="image" required>
-            <button type="submit">Differential Diagnosis... Go!</button>
-        </form>
+      <button class="cta" type="submit">Differential Diagnosis… Go!</button>
+    </form>
 
-        {% if diagnosis %}
-        <div class="diagnosis">
-            <h2>Diagnosis:</h2>
-            <p>{{ diagnosis }}</p>
-        </div>
-        {% endif %}
+    {% if diagnosis %}
+    <section class="card">
+      <h2>Diagnosis:</h2>
+      <p class="dx">{{ diagnosis }}</p>
+      {% if random_quote %}
+      <p class="quote">“{{ random_quote }}”</p>
+      {% endif %}
+    </section>
+    {% endif %}
 
-        <p class="disclaimer">Not medical advice. Obviously.</p>
-    </div>
+    <p class="disclaimer">Not medical advice. Obviously.</p>
+  </main>
 
+  <!-- Wilson corner -->
+  <aside class="wilson-corner">
+    <img src="{{ url_for('static', filename='img/wilson.png') }}" alt="Wilson" />
+    <p>I too am on this website</p>
+  </aside>
+
+  <script>
+    // tiny helper so file label shows the filename
+    const input = document.querySelector('input[type="file"]');
+    const nameSpan = document.querySelector('.file-name');
+    if (input && nameSpan) {
+      input.addEventListener('change', () => {
+        nameSpan.textContent = input.files?.[0]?.name || 'No file chosen';
+      });
+    }
+  </script>
 </body>
 </html>

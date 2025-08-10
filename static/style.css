@@ -1,81 +1,185 @@
-/* General page setup */
-body {
-    background-color: #0f0f0f;
-    color: white;
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin: 0;
+:root{
+  --bg:#0f0f0f;
+  --fg:#f5f5f5;
+  --muted:#cfcfcf;
+  --panel:#1b1b1b;
+  --accent:#ffbf00;
+  --accent-text:#1a1300;
+  --shadow:0 10px 28px rgba(0,0,0,.45);
 }
 
-/* Main container */
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--fg);
+  font:500 16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
 }
 
-/* House image */
-.house-img {
-    max-width: 500px;
-    height: auto;
-    margin-bottom: 20px;
+/* ---- HERO (House) ---- */
+.hero{
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  padding-top:clamp(18px,3vh,32px);
+}
+.house-img{
+  width:clamp(380px, 38vw, 720px);   /* big on desktop, sensible on laptops */
+  height:auto;
+  object-fit:contain;
+  filter:drop-shadow(0 14px 30px rgba(0,0,0,.55));
+  pointer-events:none;
+  user-select:none;
+  margin:0 auto -18px;               /* tuck slightly into the heading */
+  display:block;
 }
 
-@media (max-width: 600px) {
-    .house-img {
-        max-width: 320px;
-    }
+/* ---- MAIN ---- */
+.wrap{
+  width:min(1000px, 92vw);
+  margin:0 auto;
+  text-align:center;
+}
+h1{
+  margin:0 0 18px;
+  font-weight:800;
+  font-size:clamp(26px,3.6vw,44px);
+  letter-spacing:.2px;
 }
 
-/* Headline */
-h1 {
-    font-size: 1.8rem;
-    margin-bottom: 20px;
+/* ---- Controls ---- */
+.controls{
+  display:flex;
+  gap:14px;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+  margin:6px auto 10px;
 }
 
-/* Form styling */
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
+/* Custom file input */
+.file{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:#171717;
+  border-radius:10px;
+  box-shadow:var(--shadow);
+  padding:8px 10px 8px 8px;
+}
+.file input[type="file"]{ display:none }
+.file-btn{
+  background:var(--accent);
+  color:var(--accent-text);
+  border-radius:10px;
+  padding:10px 14px;
+  font-weight:700;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.file-name{
+  color:#aaa;
+  white-space:nowrap;
+  max-width:52vw;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
-input[type="file"] {
-    background-color: #222;
-    padding: 8px;
-    border-radius: 4px;
-    color: white;
+/* CTA button */
+.cta{
+  background:var(--accent);
+  color:var(--accent-text);
+  border:0;
+  border-radius:12px;
+  padding:12px 18px;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 18px 40px rgba(255,191,0,.18), var(--shadow);
+  transition:transform .08s ease, box-shadow .08s ease;
+}
+.cta:active{ transform:translateY(1px) }
+
+/* Diagnosis card */
+.card{
+  background:var(--panel);
+  border-radius:14px;
+  box-shadow:var(--shadow);
+  padding:22px 22px;
+  margin:18px auto 0;
+  width:min(900px, 92vw);
+  text-align:left;
+}
+.card h2{
+  margin:0 0 8px;
+  color:#a6e3ff;
+  font-size:clamp(18px,2.2vw,22px);
+}
+.dx{ margin:0 0 8px }
+.quote{
+  margin:8px 0 0;
+  opacity:.85;
+  font-style:italic;
 }
 
-button {
-    background-color: #ffcc00;
-    border: none;
-    padding: 10px 20px;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 6px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+.disclaimer{
+  margin:16px 0 40px;
+  color:var(--muted);
+  font-size:.92rem;
 }
 
-button:hover {
-    background-color: #ffdb4d;
+/* Wilson badge */
+.wilson-corner{
+  position:fixed;
+  right:16px;
+  bottom:16px;
+  width:132px;
+  background:rgba(0,0,0,.65);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:12px;
+  padding:6px 6px 8px;
+  text-align:center;
+  box-shadow:var(--shadow);
+  backdrop-filter:saturate(120%) blur(4px);
+}
+.wilson-corner img{
+  width:100%;
+  height:auto;
+  border-radius:8px;
+  display:block;
+  margin-bottom:6px;
+}
+.wilson-corner p{
+  margin:0;
+  font-size:.8rem;
+  color:#eee;
 }
 
-/* Diagnosis output */
-.diagnosis {
-    margin-top: 20px;
-    background-color: #1a1a1a;
-    padding: 15px;
-    border-radius: 8px;
-    max-width: 80%;
+/* ---------- Responsive tweaks ---------- */
+@media (max-width: 1200px){
+  .house-img{
+     width:clamp(420px, 48vw, 620px);
+     margin-bottom:-10px;
+  }
 }
 
-/* Disclaimer */
-.disclaimer {
-    font-size: 0.9em;
-    color: #bbb;
-    margin-top: 15px;
+@media (max-width: 900px){
+  .house-img{
+    width:min(70vw, 520px);
+    margin-bottom:2px;
+  }
+  .file-name{ max-width:56vw }
+}
+
+@media (max-width: 640px){
+  .hero{ padding-top:10px }
+  .house-img{
+    width:min(80vw, 480px); /* bigger on phones, but above controls */
+    margin-bottom:8px;
+  }
+  .controls{ gap:10px }
+  .file, .cta{ border-radius:10px }
+  .wilson-corner{ width:116px; right:12px; bottom:12px }
 }

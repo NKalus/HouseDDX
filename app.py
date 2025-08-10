@@ -7,7 +7,7 @@
 # │   ├── index.html
 # │   └── error.html
 # └── static/
-#     └── style.css
+#   -  └── style.css
 
 from __future__ import annotations
 

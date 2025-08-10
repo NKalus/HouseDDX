@@ -18,14 +18,14 @@ body {
 
 /* House image */
 .house-img {
-    max-width: 450px;
+    max-width: 500px;
     height: auto;
     margin-bottom: 20px;
 }
 
 @media (max-width: 600px) {
     .house-img {
-        max-width: 300px;
+        max-width: 320px;
     }
 }
 

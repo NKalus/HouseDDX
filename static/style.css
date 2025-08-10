@@ -1,64 +1,250 @@
-body {
-    background-color: #111;
-    color: white;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden;
+/* -------------------------------
+   House DDX – Global Styles
+--------------------------------*/
+:root {
+  --bg: #0f0f0f;
+  --panel: #1c1c1c;
+  --panel-2: #232323;
+  --text: #ffffff;
+  --text-dim: #cfcfcf;
+  --accent: #f4c10c;               /* yellow buttons */
+  --accent-press: #dbaa07;
+  --shadow: 0 18px 40px rgba(0,0,0,.45);
 }
 
-.container {
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    max-width: 600px;
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+a { color: inherit; }
+
+/* Layout wrapper so we can layer House behind content */
+main.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 42px 20px 80px;
+  text-align: center;
+}
+
+/* Title */
 h1 {
-    font-size: 2em;
-    margin-bottom: 20px;
+  margin: 0 0 20px;
+  font-size: clamp(28px, 3.2vw + 12px, 44px);
+  font-weight: 800;
+  letter-spacing: .2px;
+  text-shadow: 0 2px 18px rgba(0,0,0,.35);
 }
 
-.yellow-btn {
-    background-color: #ffcc00;
-    border: none;
-    padding: 10px 20px;
-    font-size: 1em;
-    cursor: pointer;
-    font-weight: bold;
-    border-radius: 6px;
-    margin-left: 10px;
-    box-shadow: 0px 4px 12px rgba(0,0,0,0.4);
+/* Form row */
+form.card {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: transparent;
 }
 
-.yellow-btn:hover {
-    background-color: #e6b800;
+/* File input — keep default but make it readable on dark bg */
+input[type="file"] {
+  color-scheme: dark;
+  padding: 6px 10px;
+  border-radius: 12px;
+  background: #111;
+  color: var(--text);
+  border: 1px solid #2a2a2a;
 }
 
-.result {
-    background: #222;
-    padding: 15px;
-    margin-top: 20px;
-    border-radius: 10px;
-    text-align: left;
+/* Buttons */
+button,
+.btn {
+  appearance: none;
+  border: 0;
+  border-radius: 12px;
+  padding: 12px 18px;
+  background: var(--accent);
+  color: #111;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(244,193,12,.25);
+  transition: transform .06s ease, box-shadow .12s ease, background .12s ease;
+}
+button:hover,
+.btn:hover {
+  box-shadow: 0 10px 26px rgba(244,193,12,.35);
+}
+button:active,
+.btn:active {
+  transform: translateY(1px);
+  background: var(--accent-press);
 }
 
+/* Results panel */
+.result-card {
+  margin: 26px auto 0;
+  max-width: 920px;
+  background: var(--panel);
+  border: 1px solid #2a2a2a;
+  border-radius: 14px;
+  padding: 22px 24px;
+  box-shadow: var(--shadow);
+  text-align: left;
+}
+.result-card h2 {
+  margin: 0 0 12px;
+  font-size: clamp(18px, 1.3vw + 12px, 26px);
+}
+.result-card p {
+  margin: 0;
+  color: var(--text-dim);
+  line-height: 1.55;
+}
 .disclaimer {
-    font-size: 0.9em;
-    margin-top: 15px;
-    color: #ccc;
+  margin-top: 18px;
+  color: #b8b8b8;
+  font-size: 13px;
+  text-align: center;
+  opacity: .9;
 }
 
-/* Big House image behind content */
+/* --------------------------------
+   House hero image (desktop)
+---------------------------------*/
 .house-bg {
-    position: absolute;
-    right: 15%;
-    bottom: 0;
-    height: 90vh;
-    z-index: 1;
-    pointer-events: none;
+  position: absolute;
+  z-index: 0;
+  bottom: -40px;              /* feet sink slightly below fold */
+  right: 6%;
+  height: 82vh;               /* big & eye-catching on desktop */
+  max-height: 1000px;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 30px 40px rgba(0,0,0,.5));
+  opacity: .98;
+}
+.house-bg img,
+.house-bg { display: block; }
+
+/* Keep content above House */
+.wrap > * { position: relative; z-index: 2; }
+
+/* --------------------------------
+   Wilson corner badge
+---------------------------------*/
+.wilson-corner {
+  position: fixed;
+  right: 14px;
+  bottom: 14px;
+  width: 120px;
+  text-align: center;
+  background: rgba(0,0,0,.55);
+  border: 1px solid rgba(255,255,255,.08);
+  padding: 6px;
+  border-radius: 10px;
+  color: #eee;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 8px 22px rgba(0,0,0,.35);
+}
+.wilson-corner img {
+  display: block;
+  width: 100%;
+  border-radius: 6px;
+}
+.wilson-corner p {
+  margin: 6px 0 0;
+  font-size: 12px;
+  opacity: .9;
+}
+
+/* --------------------------------
+   Responsive – mobile & tablets
+---------------------------------*/
+
+/* Tablets & down */
+@media (max-width: 1024px) {
+  .house-bg {
+    height: 74vh;
+    right: 3%;
+    bottom: -30px;
+  }
+  .result-card {
+    margin-top: 22px;
+  }
+}
+
+/* Phones */
+@media (max-width: 768px) {
+  main.wrap {
+    padding: 28px 16px 90px;
+  }
+
+  h1 {
+    margin-top: 6px;
+    margin-bottom: 14px;
+    line-height: 1.18;
+  }
+
+  form.card {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  input[type="file"] {
+    width: 100%;
+    max-width: 360px;
+  }
+
+  button,
+  .btn {
+    width: auto;
+    min-width: 260px;
+    padding: 12px 16px;
+  }
+
+  .result-card {
+    text-align: left;
+    padding: 18px 16px;
+    margin: 18px auto 0;
+  }
+
+  /* >>> Bigger House on phones, centered visually <<< */
+  .house-bg {
+    height: 50vh;             /* enlarged */
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    bottom: 44vh;             /* keep feet within view */
+    opacity: .95;
+  }
+
+  /* keep Wilson smaller on phones */
+  .wilson-corner {
+    width: 104px;
+    right: 10px;
+    bottom: 10px;
+    padding: 5px;
+  }
+  .wilson-corner p { font-size: 11px; }
+}
+
+/* Very small phones */
+@media (max-width: 400px) {
+  .house-bg {
+    height: 46vh;
+    bottom: 48vh;
+  }
+  button, .btn {
+    min-width: 220px;
+  }
 }

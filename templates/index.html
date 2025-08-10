@@ -1,60 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>House DDX</title>
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="/static/urllogo.png" />
-
-  <link rel="stylesheet" href="/static/style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House DDX</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='urllogo.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <!-- House behind content -->
-  <img class="house-bg"
-       src="/static/house-md.png"
-       alt=""
-       aria-hidden="true"
-       loading="eager" />
+    <div class="container">
+        <h1>Upload an Image for House to Diagnose</h1>
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="image" required>
+            <button type="submit">Differential Diagnosis... Go!</button>
+        </form>
+        {% if diagnosis %}
+            <div class="result">
+                <h2>Diagnosis:</h2>
+                <p>{{ diagnosis }}</p>
+            </div>
+        {% endif %}
+        <p class="disclaimer">Not medical advice. Obviously.</p>
+    </div>
 
-  <main class="wrap">
-    <h1>Upload an Image for House to Diagnose</h1>
+    <!-- House behind content -->
+    <img src="{{ url_for('static', filename='img/house-md.png') }}" alt="House" class="house-bg">
 
-    <form method="POST" action="/" enctype="multipart/form-data" class="controls">
-      <label class="file">
-        <input type="file" name="image" accept="image/*" required />
-        <span>Choose File</span>
-        <em class="filename">No file chosen</em>
-      </label>
-      <button class="go" type="submit">Differential Diagnosis... Go!</button>
-    </form>
-
-    {% if diagnosis %}
-    <section class="card">
-      <h2>Diagnosis:</h2>
-      <p class="dx">{{ diagnosis }}</p>
-      {% if random_quote %}<p class="quote">“{{ random_quote }}”</p>{% endif %}
-    </section>
-    {% endif %}
-
-    <p class="disclaimer">Not medical advice. Obviously.</p>
-  </main>
-
-  <!-- Wilson cameo (tiny, fixed) -->
-  <div class="wilson-corner">
-    <img src="/static/wilson.png" alt="Wilson" />
-    <p>I too am on this website</p>
-  </div>
-
-  <script>
-    const input = document.querySelector('.file input[type="file"]');
-    const nameEl = document.querySelector('.file .filename');
-    if (input && nameEl) {
-      input.addEventListener('change', () => {
-        nameEl.textContent = input.files?.[0]?.name || 'No file chosen';
-      });
-    }
-  </script>
+    <!-- Wilson bottom right -->
+    <a href="#" class="wilson-link" title="Wilson">
+        <img src="{{ url_for('static', filename='img/wilson.png') }}" alt="Wilson" class="wilson-img">
+    </a>
 </body>
 </html>

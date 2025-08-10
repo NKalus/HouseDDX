@@ -1,71 +1,191 @@
-body {
-    background-color: #0f0f0f;
-    color: white;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-    min-height: 100vh;
-
-    /* House behind everything */
-    background-image: url("/static/house.png");
-    background-repeat: no-repeat;
-    background-position: center 20%;
-    background-size: contain;
+/* --- Base -------------------------------------------------------------- */
+:root{
+  --bg:#111;
+  --text:#fff;
+  --muted:#cfcfcf;
+  --card:#222;
+  --cardEdge: rgba(0,0,0,.25);
+  --accent:#f3bf09;            /* House-button yellow */
+  --accentText:#1b1b1b;
 }
 
-.container {
-    position: relative;
-    z-index: 2; /* ensure it's above the background image */
-    padding-top: 40vh; /* pushes text down over House */
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font:16px/1.45 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  overflow-x:hidden;
 }
 
-h1 {
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
+/* Put HOUSE behind all content (does NOT affect layout) */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0; /* behind everything */
+  background-image: url("/static/house-md.png");
+  background-repeat: no-repeat;
+  background-position: center 12%;
+  background-size: min(80vmin, 760px); /* large on desktop, capped */
+  opacity: 1; /* tweak if you want subtler */
 }
 
-form {
-    margin-bottom: 1rem;
+/* Ensure real content layers above the background image */
+body > *{ position:relative; z-index:1; }
+
+/* --- Layout ------------------------------------------------------------ */
+.wrap{
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: clamp(18px, 3vw, 40px) 16px 80px;
+  text-align:center;
 }
 
-input[type="file"] {
-    padding: 8px;
-    border-radius: 5px;
-    border: none;
-    background: #1a1a1a;
-    color: white;
+h1{
+  margin: 18vh 0 18px;
+  font-weight: 800;
+  letter-spacing: .2px;
+  font-size: clamp(24px, 4vw, 44px);
 }
 
-button {
-    background-color: #ffcc00;
-    border: none;
-    color: black;
-    padding: 10px 20px;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-left: 10px;
-    box-shadow: 0px 4px 15px rgba(255, 204, 0, 0.4);
+/* --- Controls ---------------------------------------------------------- */
+.controls{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+  margin: 6px auto 26px;
 }
 
-button:hover {
-    background-color: #ffdb4d;
+/* Custom file input */
+.file{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  background:#1b1b1b;
+  border-radius:10px;
+  padding:10px 14px;
+  box-shadow: 0 12px 26px rgba(0,0,0,.35);
+}
+.file input[type="file"]{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  cursor:pointer;
+}
+.file span{
+  background:var(--accent);
+  color:var(--accentText);
+  font-weight:700;
+  padding:10px 14px;
+  border-radius:8px;
+}
+.file .filename{
+  color:#b8b8b8;
+  font-style:normal;
+  user-select:none;
 }
 
-.disclaimer {
-    font-size: 0.9rem;
-    color: gray;
+/* Primary button */
+.go{
+  background:var(--accent);
+  color:var(--accentText);
+  font-weight:800;
+  padding:12px 18px;
+  border:0;
+  border-radius:10px;
+  box-shadow: 0 16px 36px rgba(0,0,0,.45), 0 0 0 6px rgba(243,191,9,.12) inset;
+  cursor:pointer;
+}
+.go:hover{ filter:brightness(1.05); }
+
+/* --- Diagnosis card ---------------------------------------------------- */
+.card{
+  width:min(900px, 92vw);
+  margin: 14px auto 0;
+  background:var(--card);
+  border-radius:16px;
+  padding: 20px 22px;
+  box-shadow: 0 20px 40px var(--cardEdge);
+  text-align:left;
+}
+.card h2{
+  margin:0 0 10px;
+  color:#aeeaff;
+  font-size: clamp(18px, 2.8vw, 24px);
+}
+.card .dx{ margin:0 0 12px; }
+.card .quote{
+  margin:0;
+  color:#a9a9a9;
+  font-style:italic;
 }
 
-/* Wilson bottom right, small */
-.wilson {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    width: 80px;
-    height: auto;
-    border-radius: 8px;
-    z-index: 3;
+.disclaimer{
+  margin: 20px auto 0;
+  color: var(--muted);
+}
+
+/* --- Wilson cameo (TINY and fixed) ------------------------------------ */
+.wilson-corner{
+  position: fixed !important;
+  right: 16px !important;
+  bottom: 16px !important;
+  width: 110px !important;       /* base size */
+  max-width: 24vw !important;    /* clamp on tiny phones */
+  text-align:center;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(2px);
+  border-radius: 10px;
+  padding: 6px 6px 4px;
+  box-shadow: 0 10px 24px rgba(0,0,0,.35);
+  z-index: 9999 !important;
+}
+.wilson-corner img{
+  display:block;
+  width:100% !important;
+  height:auto !important;
+  border-radius:6px;
+}
+.wilson-corner p{
+  margin:4px 0 0;
+  font-size:11px;
+  line-height:1.1;
+  color:#ddd;
+}
+
+/* If someone accidentally renders <img class="wilson"> somewhere,
+   force it to be the same tiny corner cameo. */
+img.wilson{
+  position: fixed !important;
+  right: 16px !important;
+  bottom: 16px !important;
+  width: 110px !important;
+  height: auto !important;
+  z-index: 9999 !important;
+}
+
+/* --- Responsive tweaks ------------------------------------------------- */
+@media (max-width: 900px){
+  body::before{
+    background-position: center 10%;
+    background-size: min(84vmin, 620px);
+  }
+  h1{ margin-top: 16vh; }
+}
+@media (max-width: 560px){
+  .controls{ gap:10px; }
+  .file, .go{ width: 92vw; justify-content:center; }
+  .go{ padding:12px; }
+  .card{ padding:16px 14px; }
+  .wilson-corner{
+    width: 90px !important;
+    right: 10px !important;
+    bottom: 10px !important;
+  }
 }

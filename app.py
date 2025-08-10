@@ -34,14 +34,6 @@ import numpy as np
 
 app = Flask(__name__)
 
-# Non-blocking warmup on first request
-@app.before_first_request
-def _warm_model_async():
-    try:
-        threading.Thread(target=_ensure_model, daemon=True).start()
-    except Exception:
-        pass
-
 app.config.update(
     SECRET_KEY=os.getenv("SECRET_KEY", "dev"),
     UPLOAD_FOLDER=os.getenv("UPLOAD_FOLDER", "uploads"),
@@ -250,6 +242,7 @@ def generate_diagnosis(img_path: Optional[str]) -> tuple[str, str]:
 # ------------------------------
 @app.get("/")
 def home_get():
+    _start_warmup_once()  # kick off background model load on first visit
     return render_template("index.html")
 
 @app.post("/")

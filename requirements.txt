@@ -4,6 +4,6 @@ Pillow==11.3.0
 numpy==1.26.4
 
 # TensorFlow: Linux on Render vs Apple Silicon on your Mac
-tensorflow==2.13.0 ; not (sys_platform == "darwin" and platform_machine == "arm64")
-tensorflow-macos==2.13.0 ; sys_platform == "darwin" and platform_machine == "arm64"
-tensorflow-metal==1.1.* ; sys_platform == "darwin" and platform_machine == "arm64"
+tensorflow==2.13.0; not (sys_platform == "darwin" and platform_machine == "arm64")
+tensorflow-macos==2.13.0; sys_platform == "darwin" and platform_machine == "arm64"
+tensorflow-metal==1.1.*; sys_platform == "darwin" and platform_machine == "arm64"

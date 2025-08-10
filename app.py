@@ -1,32 +1,52 @@
-from flask import Flask, render_template, request
-from werkzeug.utils import secure_filename
-from keras.applications.mobilenet_v2 import MobileNetV2, preprocess_input, decode_predictions
-from keras.preprocessing import image
-from PIL import Image
-import tensorflow as tf
+# Project layout
+# ├── app.py
+# ├── requirements.txt
+# ├── render.yaml
+# ├── Procfile              # (optional if you use render.yaml startCommand)
+# ├── templates/
+# │   ├── index.html
+# │   └── error.html
+# └── static/
+#     └── style.css
+
+# ------------------------------
+# app.py
+# ------------------------------
+from __future__ import annotations
+
+# --- keep TF tame on tiny dynos BEFORE importing it ---
 import os
-import random
-import numpy as np
-import traceback
+os.environ.setdefault("CUDA_VISIBLE_DEVICES", "-1")
+os.environ.setdefault("TF_ENABLE_ONEDNN_OPTS", "0")
+os.environ.setdefault("PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION", "python")
+os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")
 
+import io
 import logging
-logging.basicConfig(level=logging.DEBUG)
+import random
+import threading
+import traceback
+from typing import Optional
 
-# --- Environment variables to prevent GPU issues ---
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
-os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
-os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "python"
-tf.config.set_visible_devices([], 'GPU')
+from flask import Flask, render_template, request, abort
+from werkzeug.utils import secure_filename
+from PIL import Image
+import numpy as np
 
-# --- Flask setup ---
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = 'uploads'
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+app.config.update(
+    SECRET_KEY=os.getenv("SECRET_KEY", "dev"),
+    UPLOAD_FOLDER=os.getenv("UPLOAD_FOLDER", "uploads"),
+    MAX_CONTENT_LENGTH=10 * 1024 * 1024,  # 10 MB
+)
+os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
-# --- Load pre-trained model ---
-model = MobileNetV2(weights='imagenet')
+logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
+log = logging.getLogger("house-ddx")
 
-# --- Diagnosis bank ---
+# ------------------------------
+# Long, House-appropriate diagnosis bank
+# ------------------------------
 diagnosis_bank = {
     "rash": [
         "Hyperreactive dermoepidermal exuberance syndrome (a.k.a. your skin is being dramatic)",
@@ -43,7 +63,7 @@ diagnosis_bank = {
         "Pseudoallergic dermal flailing (an allergic reaction to your own BS)",
         "Neurotic scratch cycle disorder (itch, scratch, regret, repeat)",
         "Localized hypersensitivity to your own nonsense",
-        "Frantic blister regression disorder (your skin tried to cancel itself)"
+        "Frantic blister regression disorder (your skin tried to cancel itself)",
     ],
     "swelling": [
         "Inflammatory bloatosis maximus (your tissues are auditioning for a Michelin Man reboot)",
@@ -60,7 +80,7 @@ diagnosis_bank = {
         "Inflamed self-worth sacs (diagnosed after checking your Twitter)",
         "Psychosocial bloat disorder",
         "Unsolicited opinion-based tissue expansion",
-        "Whiny gland hypertrophy"
+        "Whiny gland hypertrophy",
     ],
     "bruise": [
         "Contusional dumbassity (obtained by walking into a 'Pull' door marked 'Push')",
@@ -77,7 +97,7 @@ diagnosis_bank = {
         "Purpura of avoidable stupidity",
         "Trauma seepage of the brainless variety",
         "Sympathy contusion cluster",
-        "Impulsive chaos bruise"
+        "Impulsive chaos bruise",
     ],
     "growth": [
         "Benign attention-seeking pseudotumor (it’s not dangerous, just annoying—like you)",
@@ -94,7 +114,7 @@ diagnosis_bank = {
         "Unbiopsyable meat mystery (not FDA approved)",
         "Stagnant ambition carcinoma",
         "Ego-noma of the low self-esteem quadrant",
-        "Nonpalpable potential node"
+        "Nonpalpable potential node",
     ],
     "burn": [
         "First-degree idiocy scorch (because you touched it after saying 'I think it's cooled down')",
@@ -111,7 +131,7 @@ diagnosis_bank = {
         "Microwave hubris syndrome",
         "Heartbreak-induced thermal inflammation",
         "Toaster duel fallout",
-        "Curiosity burn unit admission pending"
+        "Curiosity burn unit admission pending",
     ],
     "lump": [
         "Lump of existential dread (hard to the touch, harder to explain)",
@@ -128,7 +148,7 @@ diagnosis_bank = {
         "Procrastination growth, chronic",
         "Meatball of metaphysical concern",
         "Psychosomatic flesh bundle",
-        "Snark-induced granuloma"
+        "Snark-induced granuloma",
     ],
     "idiocy": [
         "Cerebral decelerosis (your thoughts run Windows 95)",
@@ -150,100 +170,160 @@ diagnosis_bank = {
         "Hyperactive B.S. synthesis gland",
         "Moronic viral content exposure",
         "One-sided logic deflation",
-        "Misinformational brain rot"
-    ]
+        "Misinformational brain rot",
+    ],
 }
 
-# --- Image classification ---
-uploaded_file = request.files['image']
-uploaded_file.save(filepath)
+# ------------------------------
+# Lazy, threadsafe model loader (so cold starts don't blank-screen)
+# ------------------------------
+_model = None
+_model_lock = threading.Lock()
+_preprocess = None
+_decode = None
+_load_img = None
+_img_to_array = None
 
-img = Image.open(filepath)
-img.thumbnail((512, 512))  # Resize in-place
-img.save(filepath)
+def _ensure_model():
+    global _model, _preprocess, _decode, _load_img, _img_to_array
+    if _model is not None:
+        return
+    with _model_lock:
+        if _model is not None:
+            return
+        log.info("Loading MobileNetV2 (imagenet) ...")
+        # Import inside to avoid heavy import at module import time
+        import tensorflow as tf  # noqa: F401
+        from tensorflow.keras.applications.mobilenet_v2 import (
+            MobileNetV2,
+            preprocess_input,
+            decode_predictions,
+        )
+        from tensorflow.keras.preprocessing import image as kimage
+        _model = MobileNetV2(weights="imagenet")
+        _preprocess = preprocess_input
+        _decode = decode_predictions
+        _load_img = kimage.load_img
+        _img_to_array = kimage.img_to_array
+        log.info("Model loaded.")
 
-def classify_image(img_path):
+# ------------------------------
+# Helpers
+# ------------------------------
+ALLOWED_EXTS = {"png", "jpg", "jpeg", "webp"}
+
+
+def _allowed(filename: str) -> bool:
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTS
+
+
+def classify_image(img_path: str) -> str:
     try:
-        img = image.load_img(img_path, target_size=(224, 224))
-        x = image.img_to_array(img)
+        _ensure_model()
+        img = _load_img(img_path, target_size=(224, 224))
+        x = _img_to_array(img)
         x = np.expand_dims(x, axis=0)
-        x = preprocess_input(x)
-        preds = model.predict(x)
-        label = decode_predictions(preds, top=1)[0][0][1]
+        x = _preprocess(x)
+        preds = _model.predict(x)
+        label = _decode(preds, top=1)[0][0][1]
         return label.lower()
     except Exception as e:
-        print(f"Classification error: {e}")
-        traceback.print_exc()
-        return "idiocy"
+        log.warning("Classification error: %s", e)
+        log.error("Diagnosis generation error: %s", e)
+        log.debug("\n" + traceback.format_exc())
+        return "Diagnostic error. Likely idiocy.", random.choice(QUOTES)
 
-# --- Tag mapper ---
-def map_to_tag(label):
-    if random.random() < 0.07:
-        return "idiocy"
-    if any(word in label for word in ["rash", "eczema", "blister", "hives"]):
-        return "rash"
-    elif any(word in label for word in ["bruise", "contusion", "hematoma"]):
-        return "bruise"
-    elif any(word in label for word in ["swelling", "edema", "inflammation"]):
-        return "swelling"
-    elif any(word in label for word in ["lump", "tumor", "mass", "growth"]):
-        return "growth"
-    elif any(word in label for word in ["burn", "scald", "char"]):
-        return "burn"
-    else:
+
+def map_to_tag(label: str) -> str:
+    try:
+        if random.random() < 0.07:
+            return "idiocy"
+        if any(w in label for w in ["rash", "eczema", "blister", "hives"]):
+            return "rash"
+        if any(w in label for w in ["bruise", "contusion", "hematoma"]):
+            return "bruise"
+        if any(w in label for w in ["swelling", "edema", "inflammation"]):
+            return "swelling"
+        if any(w in label for w in ["lump", "tumor", "mass", "growth"]):
+            return "growth"
+        if any(w in label for w in ["burn", "scald", "char"]):
+            return "burn"
         return random.choice(list(diagnosis_bank.keys()))
+    except Exception:
+        return "idiocy"
 
-# --- Diagnosis generator ---
-def generate_diagnosis(img_path):
+
+QUOTES = [
+    "Everybody lies.",
+    "It's never lupus.",
+    "Patients always lie, especially to doctors.",
+    "If you talk to God, you're religious. If God talks to you, you're psychotic.",
+    "I take risks, sometimes patients die. But not taking risks causes more deaths.",
+]
+
+
+def generate_diagnosis(img_path: Optional[str]) -> tuple[str, str]:
     try:
-        label = classify_image(img_path)
+        label = classify_image(img_path) if img_path else "idiocy"
         tag = map_to_tag(label)
-        return random.choice(diagnosis_bank[tag])
+        return random.choice(diagnosis_bank[tag]), random.choice(QUOTES)
     except Exception as e:
-        print(f"Diagnosis generation error: {e}")
-        traceback.print_exc()
-        return "Diagnostic error. Likely idiocy."
-    import gc
-    gc.collect()
-
-# --- Main route ---
-from flask import Flask, request, render_template
-import os
-
-app = Flask(__name__)
-
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    if request.method == 'POST':
-        uploaded_file = request.files['image']
-        filepath = os.path.join('uploads', uploaded_file.filename)
-        uploaded_file.save(filepath)
-        # Process the file or make a prediction here
-        return render_template('index.html', diagnosis="You're dying. Probably.")
-    return render_template('index.html')
+        log.error("Diagnosis generation error: %s", e)
+        log.debug("\n" + traceback.format_exc())
+        return "Diagnostic error. Likely idiocy.", random.choice(QUOTES)
 
 
-    diagnosis = None
-    quote = None
-    quotes = [
-        "Everybody lies.",
-        ...
-    ]
+# ------------------------------
+# Routes
+# ------------------------------
+@app.get("/")
+def home_get():
+    return render_template("index.html")
+
+
+@app.post("/")
+@app.post("/diagnose")
+def home_post():
+    if "image" not in request.files:
+        abort(400, "image field missing")
+    f = request.files["image"]
+    if not f.filename:
+        abort(400, "no file selected")
+    if not _allowed(f.filename):
+        abort(400, "unsupported file type")
+
+    fname = secure_filename(f.filename)
+    path = os.path.join(app.config["UPLOAD_FOLDER"], fname)
+
+    # Process entirely in-memory first to avoid partial writes
     try:
-        if request.method == 'POST' and 'image' in request.files:
-            file = request.files['image']
-            if file.filename:
-                filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-                file.save(filepath)
-                diagnosis = generate_diagnosis(filepath)
-                quote = random.choice(quotes)
+        raw = f.read()
+        img = Image.open(io.BytesIO(raw)).convert("RGB")
+        img.thumbnail((1024, 1024))
+        img.save(path, format="JPEG", quality=90)
     except Exception as e:
-        diagnosis = f"Error: {str(e)}"
-        app.logger.exception("Diagnosis generation failed")
+        log.exception("Failed to read/save image: %s", e)
+        abort(400, "invalid image")
 
-    return render_template('index.html', diagnosis=diagnosis, random_quote=quote)
+    dx, quote = generate_diagnosis(path)
+    return render_template("index.html", diagnosis=dx, random_quote=quote)
 
-# --- App runner ---
+
+@app.get("/__health")
+def health():
+    return {"ok": True}
+
+
+@app.errorhandler(400)
+def bad_request(e):
+    return render_template("error.html", message=str(e)), 400
+
+
+@app.errorhandler(500)
+def server_error(e):
+    log.exception("500 error: %s", e)
+    return render_template("error.html", message="Internal error. The ducklings are investigating."), 500
+
+
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5050))
-    app.run(host="0.0.0.0", port=port, debug=True)
+    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5001)), debug=True)

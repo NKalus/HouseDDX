@@ -1,50 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>House Team DDX</title>
-    <link rel="stylesheet" href="/static/style.css">
-    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/en/e/e3/House_titlecard.jpg">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>House of House — Totally Real Diagnoses</title>
+  <link rel="stylesheet" href="/static/style.css" />
 </head>
 <body>
-    <div class="container">
-        <h1>Upload an Image for Your Totally Real Diagnosis</h1>
+  <main class="wrap">
+    <h1>Upload an Image for Your Totally Real Diagnosis</h1>
 
-        <form method="POST" enctype="multipart/form-data">
-            <input type="file" name="image" accept="image/*" required>
-            <button type="submit">Diagnose Me</button>
-        </form>
+    <form method="POST" action="/" enctype="multipart/form-data" class="card">
+      <input type="file" name="image" accept="image/*" required />
+      <button type="submit">Diagnose Me</button>
+    </form>
 
-        {% if diagnosis %}
-            <div class="result">
-                <h2>Your Diagnosis:</h2>
-                <p>{{ diagnosis }}</p>
-                <div class="quote">
-                    <em>{{ random_quote }}</em>
-                </div>
-                <div class="treatment">
-                    <strong>Prescribed:</strong>
-                    <ul>
-                        <li>1000ccs of self-awareness</li>
-                        <li>Two tablespoons of critical thinking</li>
-                        <li>A full night's sleep for once in your life</li>
-                    </ul>
-                </div>
-                <div class="share">
-                    <button onclick="copyDiagnosis()">Copy Diagnosis to Clipboard</button>
-                </div>
-            </div>
-        {% endif %}
+    {% if diagnosis %}
+    <section class="result card">
+      <h2>Diagnosis</h2>
+      <p>{{ diagnosis }}</p>
+    </section>
+    {% endif %}
 
-    </div>
-
-    <script>
-        function copyDiagnosis() {
-            const diagnosis = document.querySelector('.result p').innerText;
-            navigator.clipboard.writeText(diagnosis)
-                .then(() => alert("Copied to clipboard: " + diagnosis))
-                .catch(err => alert("Error copying text: " + err));
-        }
-    </script>
+    <footer>
+      <p><small>Not medical advice. Obviously.</small></p>
+    </footer>
+  </main>
 </body>
 </html>

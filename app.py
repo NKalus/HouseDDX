@@ -34,6 +34,13 @@ from PIL import Image
 import numpy as np
 
 app = Flask(__name__)
+def health():
+    return {"ok": True}
+
+# Your other routes below...
+@app.route("/")
+def home():
+    return "Hello World"
 app.config.update(
     SECRET_KEY=os.getenv("SECRET_KEY", "dev"),
     UPLOAD_FOLDER=os.getenv("UPLOAD_FOLDER", "uploads"),

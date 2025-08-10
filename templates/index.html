@@ -1,45 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <title>House DDX</title>
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/urllogo.png') }}"/>
-
-  <!-- Styles -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House DDX</title>
+    <link rel="icon" type="image/png" href="urllogo.png">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-  <!-- Hero section: House appears BEHIND via CSS ::before -->
-  <main class="hero">
-    <h1>Upload an Image for House to Diagnose</h1>
+    <div class="container">
+        <h1>Upload an Image for House to Diagnose</h1>
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="image" required>
+            <button type="submit">Differential Diagnosis... Go!</button>
+        </form>
+        <p class="disclaimer">Not medical advice. Obviously.</p>
+    </div>
 
-    <form method="POST" action="/" enctype="multipart/form-data" class="controls">
-      <label class="file">
-        <input type="file" name="image" accept="image/*" required />
-        <span>Choose File</span>
-      </label>
-      <button type="submit" class="cta">Differential Diagnosis... Go!</button>
-    </form>
-
-    {% if diagnosis %}
-    <section class="card">
-      <h2>Diagnosis:</h2>
-      <p>{{ diagnosis }}</p>
-    </section>
-    {% endif %}
-
-    <p class="disclaimer">Not medical advice. Obviously.</p>
-  </main>
-
-  <!-- Wilson corner badge -->
-  <div class="wilson-corner" role="note" aria-label="Dr. Wilson cameo">
-    <img src="{{ url_for('static', filename='img/wilson.png') }}"
-         alt="Dr. Wilson" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-    <p class="wilson-caption" style="display:none">I too am on this website</p>
-  </div>
+    <!-- Wilson bottom-right -->
+    <img src="/static/wilson.png" alt="Wilson" class="wilson">
 </body>
 </html>

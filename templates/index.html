@@ -8,10 +8,16 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/static/urllogo.png" />
 
-  <!-- Styles -->
   <link rel="stylesheet" href="/static/style.css" />
 </head>
 <body>
+  <!-- House behind content -->
+  <img class="house-bg"
+       src="/static/house-md.png"
+       alt=""
+       aria-hidden="true"
+       loading="eager" />
+
   <main class="wrap">
     <h1>Upload an Image for House to Diagnose</h1>
 
@@ -21,36 +27,32 @@
         <span>Choose File</span>
         <em class="filename">No file chosen</em>
       </label>
-
-      <button type="submit" class="go">Differential Diagnosis... Go!</button>
+      <button class="go" type="submit">Differential Diagnosis... Go!</button>
     </form>
 
     {% if diagnosis %}
     <section class="card">
       <h2>Diagnosis:</h2>
       <p class="dx">{{ diagnosis }}</p>
-      {% if random_quote %}
-      <p class="quote">“{{ random_quote }}”</p>
-      {% endif %}
+      {% if random_quote %}<p class="quote">“{{ random_quote }}”</p>{% endif %}
     </section>
     {% endif %}
 
     <p class="disclaimer">Not medical advice. Obviously.</p>
   </main>
 
-  <!-- Wilson (tiny corner cameo) -->
-  <div class="wilson-corner" aria-label="Dr. Wilson cameo">
+  <!-- Wilson cameo (tiny, fixed) -->
+  <div class="wilson-corner">
     <img src="/static/wilson.png" alt="Wilson" />
     <p>I too am on this website</p>
   </div>
 
-  <!-- Optional: show selected filename (no frameworks) -->
   <script>
-    const fileInput = document.querySelector('.file input[type="file"]');
-    const fileName = document.querySelector('.file .filename');
-    if (fileInput && fileName) {
-      fileInput.addEventListener('change', () => {
-        fileName.textContent = fileInput.files?.[0]?.name || 'No file chosen';
+    const input = document.querySelector('.file input[type="file"]');
+    const nameEl = document.querySelector('.file .filename');
+    if (input && nameEl) {
+      input.addEventListener('change', () => {
+        nameEl.textContent = input.files?.[0]?.name || 'No file chosen';
       });
     }
   </script>

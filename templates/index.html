@@ -3,15 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-H3S176JZZR"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-H3S176JZZR');
-</script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H3S176JZZR"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-H3S176JZZR');
+  </script>
+
   <title>House DDX</title>
   <link rel="stylesheet" href="/static/style.css" />
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/urllogo.png') }}">
@@ -19,22 +20,23 @@
 <body>
   <main class="wrap">
     <h1>Upload an Image for House to Diagnose</h1>
-
     <form method="POST" action="/" enctype="multipart/form-data" class="card">
       <input type="file" name="image" accept="image/*" required />
       <button type="submit">Differential Diagnosis... Go!</button>
     </form>
 
     {% if diagnosis %}
-    <section class="result card">
-      <h2>Diagnosis</h2>
+    <div class="result">
+      <h2>Diagnosis:</h2>
       <p>{{ diagnosis }}</p>
-    </section>
+    </div>
     {% endif %}
-
-    <footer>
-      <p><small>Not medical advice. Obviously.</small></p>
-    </footer>
   </main>
+
+  <!-- Wilson Easter Egg -->
+  <div class="wilson-corner">
+    <img src="{{ url_for('static', filename='img/wilson.png') }}" alt="Dr. Wilson" />
+    <p>I too am on this website</p>
+  </div>
 </body>
 </html>

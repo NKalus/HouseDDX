@@ -1,7 +1,7 @@
 Flask==3.0.3
 gunicorn==21.2.0
 Pillow==11.3.0
-numpy==1.24.4
+numpy==1.24.3
 protobuf==3.20.3
 
 # TensorFlow: Linux (Render) vs Apple Silicon (your Mac)

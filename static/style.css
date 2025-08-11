@@ -24,7 +24,7 @@ body{
   position:relative;
   z-index:2;            /* stays above the House image */
   max-width:1100px;
-  margin:10vh auto 12vh;
+  margin:18vh auto 12vh;
   padding:0 24px;
   text-align:center;
 }
@@ -178,4 +178,9 @@ button:active{ transform:translateY(1px) }
   }
   .wilson-corner img{ width:56px; height:56px }
   .wilson-corner p{ font-size:13px; max-width:140px }
+@media (max-width: 900px) {
+    .wrap {
+        margin-top: 14vh; /* increase/decrease if you want it lower/higher */
+    }
+
 }

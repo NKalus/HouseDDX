@@ -2,25 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>HouseDDX</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="{{ url_for('static', filename='img/urllogo.png') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=209">
+    <title>House of House</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='urllogo.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=210">
 </head>
 <body>
-    <main class="wrap">
+    <div class="wrap">
         <h1>Upload an Image for House to Diagnose</h1>
-        
+
         <form class="card" method="POST" enctype="multipart/form-data">
-            <input type="file" name="image" id="image" required>
+            <input type="file" name="image" required>
             <button type="submit">Differential Diagnosis... Go!</button>
         </form>
 
         <p class="disclaimer">Not medical advice. Obviously.</p>
 
         {% if diagnosis %}
-        <div class="card result">
-            <h2><span class="label">Diagnosis:</span></h2>
+        <div class="card result-card">
+            <h2><span class="diagnosis-label">Diagnosis:</span></h2>
             <p>{{ diagnosis }}</p>
             {% if quote %}
             <p class="quote"><em>"{{ quote }}"</em></p>
@@ -28,14 +28,7 @@
         </div>
         {% endif %}
 
-        <!-- House image -->
-        <img src="{{ url_for('static', filename='img/house-md.png') }}" alt="House" class="house-bg">
+        <img src="{{ url_for('static', filename='img/house.png') }}" alt="House" class="house-bg">
 
-        <!-- Wilson bottom-right corner -->
         <div class="wilson-corner">
-            <img src="{{ url_for('static', filename='img/wilson.png') }}" alt="Wilson">
-            <span>I too am on this website</span>
-        </div>
-    </main>
-</body>
-</html>
+            <img src="{{ url_for('static', filename=_

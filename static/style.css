@@ -178,4 +178,11 @@ button:active{ transform:translateY(1px) }
   }
   .wilson-corner img{ width:56px; height:56px }
   .wilson-corner p{ font-size:13px; max-width:140px }
+  /* Raise header on desktop only */
+@media (min-width: 901px){
+  .wrap h1{
+    margin-top: -4vh; /* negative value pulls it upward */
+  }
+}
+
 }

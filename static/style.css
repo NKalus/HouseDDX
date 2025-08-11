@@ -1,208 +1,47 @@
-/* ---- Base ---- */
-:root{
-  --bg:#0f0f0f;
-  --card:#171717;
-  --card-2:#1d1d1d;
-  --text:#f2f2f2;
-  --muted:#b8b8b8;
-  --accent:#f2c200;
-  --accent-shadow:rgba(242,194,0,.35);
-  --teal:#5fe1ff;
+/* General Page Styles */
+body {
+    background-color: #111;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
 }
 
-*{ box-sizing:border-box }
-html,body{ height:100% }
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-  overflow-x:hidden;
+.wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    position: relative;
+    z-index: 2;
 }
 
-/* Content wrapper above House image */
-.wrap{
-  position:relative;
-  z-index:2;
-  max-width:1100px;
-  margin:16vh auto 12vh;       /* baseline spacing; adjusted by media queries */
-  padding:0 24px;
-  text-align:center;
+h1 {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin: 20px 0;
 }
 
-/* ---- Headline ---- */
-h1{
-  margin:0 0 28px;
-  font-weight:800;
-  font-size:clamp(28px, 4.8vw, 56px);
-  letter-spacing:.2px;
-  text-shadow:0 2px 0 rgba(0,0,0,.35);
+/* Upload Card */
+form.card {
+    background: rgba(0, 0, 0, 0.85);
+    padding: 20px;
+    border-radius: 12px;
+    display: inline-block;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.4);
+    margin-top: 20px;
 }
 
-/* ---- Upload card ---- */
-.card{
-  margin-inline:auto;
-  background:linear-gradient(180deg, var(--card), var(--card-2));
-  border-radius:18px;
-  padding:18px;
-  box-shadow:
-    0 24px 60px rgba(0,0,0,.45),
-    0 10px 24px rgba(0,0,0,.35);
-  width:min(900px, 92vw);
+input[type="file"] {
+    padding: 10px;
+    background: #222;
+    border-radius: 6px;
+    border: none;
+    color: white;
 }
 
-.card .row{
-  display:flex;
-  gap:14px;
-  justify-content:center;
-  align-items:center;
-  flex-wrap:wrap;
-}
-
-input[type="file"]{
-  appearance:none;
-  border:none;
-  outline:none;
-  background:#111;
-  color:var(--muted);
-  padding:12px 14px;
-  border-radius:12px;
-  width:min(520px, 78vw);
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
-}
-
-button{
-  appearance:none;
-  border:none;
-  outline:none;
-  cursor:pointer;
-  font-weight:700;
-  color:#111;
-  background:var(--accent);
-  padding:12px 18px;
-  border-radius:12px;
-  white-space:nowrap;
-  box-shadow:
-    0 10px 30px var(--accent-shadow),
-    0 2px 0 rgba(0,0,0,.35) inset;
-  transition:transform .06s ease;
-}
-button:active{ transform:translateY(1px) }
-
-/* ---- House background image ---- */
-.house-bg{
-  position:absolute;
-  left:50%;
-  top:50%;
-  transform:translate(-50%, -50%);
-  width:min(78vw, 780px);
-  max-width:1000px;
-  height:auto;
-  pointer-events:none;
-  user-select:none;
-  z-index:1;
-  filter:drop-shadow(0 30px 60px rgba(0,0,0,.6));
-}
-
-/* ---- Diagnosis card ---- */
-.dx{ margin-top:18px; text-align:left }
-.dx h2{
-  margin:0 0 10px;
-  color:var(--teal);
-  font-size:22px;
-}
-.dx p{ margin:0; font-size:18px }
-.quote{
-  margin:14px 0 0;
-  color:var(--muted);
-  font-style:italic;
-}
-
-/* ---- Disclaimer ---- */
-.disclaimer{
-  color:var(--muted);
-  margin:16px 0 0;
-  text-shadow:0 2px 0 rgba(0,0,0,.35);
-}
-
-/* ---- Wilson widget ---- */
-.wilson-corner{
-  position:fixed;
-  right:16px;
-  bottom:16px;
-  z-index:30;
-  background:rgba(0,0,0,.6);
-  backdrop-filter:saturate(140%) blur(6px);
-  border-radius:16px;
-  padding:8px 10px 10px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  box-shadow:0 12px 30px rgba(0,0,0,.45);
-}
-.wilson-corner img{
-  display:block;
-  width:64px;
-  height:64px;
-  object-fit:cover;
-  border-radius:10px;
-  box-shadow:0 6px 16px rgba(0,0,0,.45);
-}
-.wilson-corner p{
-  margin:0;
-  color:#fff;
-  font-weight:600;
-  font-size:14px;
-  max-width:160px;
-}
-
-/* ---------- Responsive layout ---------- */
-
-/* Phones & small tablets */
-@media (max-width: 900px){
-  .wrap{ margin-top:12vh; }                 /* keep header comfortable on mobile */
-  .card{ margin-top:2vh; }                   /* card close to header */
-  .house-bg{
-    top:64%;
-    transform:translate(-50%, -52%);
-    width:min(90vw, 600px);
-  }
-  .disclaimer{ margin-top:14px; }
-  .dx{ margin-top:16px; }
-}
-
-/* Desktop polish only */
-@media (min-width: 901px){
-  /* raise header a bit */
-  .wrap h1{ margin-top:-3vh; }
-
-  /* give card breathing room below header */
-  main.wrap > form.card{ margin-top:3.5vh; }
-
-  /* drop House slightly so face is clear of header */
-  .house-bg{
-    top:52%;
-    transform:translate(-50%, -50%);
-  }
-  /* MOBILE: drop the upload card + disclaimer to House's knees */
-@media (max-width: 900px){
-  /* keep the header where it is */
-  .wrap{ margin-top:12vh; }
-
-  /* push ONLY the upload card down */
-  main.wrap > form.card{
-    margin-top: 24vh !important;   /* try 22–26vh to fine-tune */
-  }
-
-  /* keep the disclaimer just below the card */
-  .disclaimer{
-    margin-top: 3vh !important;    /* increase if it still overlaps */
-  }
-
-  /* keep House centered a touch lower so face stays clear */
-  .house-bg{
-    top: 64%;
-    transform: translate(-50%, -52%);
-  }
-
-}
+button {
+    background: #FFD700;
+    border: none;

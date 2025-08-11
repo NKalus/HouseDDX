@@ -1,14 +1,3 @@
-# Project layout
-# ├── app.py
-# ├── requirements.txt
-# ├── render.yaml
-# ├── Procfile              # (optional if you use render.yaml startCommand)
-# ├── templates/
-# │   ├── index.html
-# │   └── error.html
-# └── static/
-#     └── style.css
-
 from __future__ import annotations
 
 # --- keep TF tame on tiny dynos BEFORE importing it ---
@@ -37,15 +26,18 @@ app = Flask(__name__)
 app.config.update(
     SECRET_KEY=os.getenv("SECRET_KEY", "dev"),
     UPLOAD_FOLDER=os.getenv("UPLOAD_FOLDER", "uploads"),
-    MAX_CONTENT_LENGTH=10 * 1024 * 1024,  # 10 MB
+    MAX_CONTENT_LENGTH=20 * 1024 * 1024,  # ### CHANGED: 20 MB (was 10)
 )
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+
+# Optional fast-mode: skip TF and just use the joke bank
+FAST_MODE = os.getenv("FAST_MODE", "0") == "1"  # ### NEW
 
 logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
 log = logging.getLogger("house-ddx")
 
 # ------------------------------
-# Long, House-appropriate diagnosis bank
+# Long, House-appropriate diagnosis bank (unchanged)
 # ------------------------------
 diagnosis_bank = {
     "rash": [
@@ -112,20 +104,18 @@ diagnosis_bank = {
     ],
     "idiocy": [
         "Cerebral decelerosis (your thoughts run Windows 95)",
-        "Acute moronitis with chronic backpedaling",
-        "Smugnosia terminalis (inability to shut up despite zero knowledge)",
-        "Reality rejection flare-up (triggered by facts)",
-        "Cortical slowdown with live-commentary syndrome",
-        "Neurohumoral collapse caused by confidence in conspiracy theories",
-        "Post-truth lobular erosion",
-        "Flatline of insight with TikTok overlays",
-        "Meme-induced logical infarct",
-        "Memory hole echo chamber disorder",
-        "Dunning-Krugerosis, advanced stage",
+        "Moronosia terminalis (inability to shut the fuck up despite zero knowledge)",
+        "Reality rejection flare-up (triggered by FACTS and LOGIC)",
+        "Cortical ASMR overstimulation (you need to have your ears removed)",
+        "Neurohumoral collapse (i have extra vicodin if you need)",
+        "Post-nut lobular erosion",
+        "Cuddy-induced logical infarct",
+        "Memory hole echo chamber bitch disease",
+        "Dunning-Idiotosis, incurable",
         "Terminal intellect disorder",
         "Logical non-compliance syndrome",
-        "Hippocampal inflammation due to Reddit overdose",
-        "Recurring psychosomatic derp",
+        "Hippocampal inflammation tiktok brrainrot",
+        "Recurring psychosomatic moron disease",
         "Cortical smug overload",
         "Idiopathic synthetic glandular hyperplasia (you literally have no brain cells)",
         "You have a cold.",
@@ -133,7 +123,7 @@ diagnosis_bank = {
 }
 
 # ------------------------------
-# Lazy, threadsafe model loader (so cold starts don't blank-screen)
+# Lazy, threadsafe model loader (unchanged)
 # ------------------------------
 _model = None
 _model_lock = threading.Lock()
@@ -144,18 +134,15 @@ _img_to_array = None
 
 def _ensure_model():
     global _model, _preprocess, _decode, _load_img, _img_to_array
-    if _model is not None:
+    if _model is not None or FAST_MODE:  # ### NEW: skip loading in FAST_MODE
         return
     with _model_lock:
         if _model is not None:
             return
         log.info("Loading MobileNetV2 (imagenet) ...")
-        # Import inside to avoid heavy import at module import time
         import tensorflow as tf  # noqa: F401
         from tensorflow.keras.applications.mobilenet_v2 import (
-            MobileNetV2,
-            preprocess_input,
-            decode_predictions,
+            MobileNetV2, preprocess_input, decode_predictions
         )
         from tensorflow.keras.preprocessing import image as kimage
         _model = MobileNetV2(weights="imagenet")
@@ -165,18 +152,18 @@ def _ensure_model():
         _img_to_array = kimage.img_to_array
         log.info("Model loaded.")
 
-# Optional: manual warm route to pre-load the model
+# Optional warm route
 _warm_started = False
 def _start_warmup_once():
     global _warm_started
-    if not _warm_started:
+    if not _warm_started and not FAST_MODE:  # ### NEW: don't bother warming in FAST_MODE
         _warm_started = True
         threading.Thread(target=_ensure_model, daemon=True).start()
 
 @app.get("/__warmup")
 def warmup():
     _start_warmup_once()
-    return {"warming": True}
+    return {"warming": True, "fast_mode": FAST_MODE}
 
 # ------------------------------
 # Helpers
@@ -187,7 +174,10 @@ def _allowed(filename: str) -> bool:
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTS
 
 def classify_image(img_path: str) -> str:
+    """Return a coarse label via TF, or 'idiocy' when FAST_MODE or on error."""
     try:
+        if FAST_MODE:
+            return "idiocy"  # ### NEW: instant fallback
         _ensure_model()
         img = _load_img(img_path, target_size=(224, 224))
         x = _img_to_array(img)
@@ -197,7 +187,7 @@ def classify_image(img_path: str) -> str:
         label = _decode(preds, top=1)[0][0][1]
         return label.lower()
     except Exception as e:
-        log.warning("Classification error: %s", e)
+        log.warning("Classification error (fallback to idiocy): %s", e)
         log.debug("\n" + traceback.format_exc())
         return "idiocy"
 
@@ -242,7 +232,7 @@ def generate_diagnosis(img_path: Optional[str]) -> tuple[str, str]:
 # ------------------------------
 @app.get("/")
 def home_get():
-    _start_warmup_once()  # kick off background model load on first visit
+    _start_warmup_once()
     return render_template("index.html")
 
 @app.post("/")
@@ -259,12 +249,12 @@ def home_post():
     fname = secure_filename(f.filename)
     path = os.path.join(app.config["UPLOAD_FOLDER"], fname)
 
-    # Process entirely in-memory first to avoid partial writes
+    # Process in-memory, downscale, then save small to disk
     try:
         raw = f.read()
         img = Image.open(io.BytesIO(raw)).convert("RGB")
-        img.thumbnail((1024, 1024))
-        img.save(path, format="JPEG", quality=90)
+        img.thumbnail((1600, 1600))  # ### CHANGED: 1600px max (was 1024)
+        img.save(path, format="JPEG", quality=85, optimize=True)  # ### CHANGED: leaner file
     except Exception as e:
         log.exception("Failed to read/save image: %s", e)
         abort(400, "invalid image")
@@ -274,7 +264,7 @@ def home_post():
 
 @app.get("/__health")
 def health():
-    return {"ok": True}
+    return {"ok": True, "fast_mode": FAST_MODE}
 
 @app.errorhandler(400)
 def bad_request(e):

@@ -182,6 +182,6 @@ button:active{ transform:translateY(1px) }
 }
 
 /* ---- Only move the upload card down ---- */
-.card{ margin-top:24vh !important; }           /* desktop/tablet */
+.card{ margin-top:28vh !important; }           /* desktop/tablet */
 @media (max-width: 900px){ .card{ margin-top:28vh !important; } }
 @media (max-width: 600px){ .card{ margin-top:30vh !important; } }

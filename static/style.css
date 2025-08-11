@@ -22,9 +22,9 @@ body{
 
 .wrap{
   position:relative;
-  z-index:2;                 /* above House image */
+  z-index:2; /* above House image */
   max-width:1100px;
-  margin:18vh auto 12vh;     /* keep H1 location */
+  margin:18vh auto 12vh; /* H1 baseline */
   padding:0 24px;
   text-align:center;
 }
@@ -99,7 +99,7 @@ button:active{ transform:translateY(1px) }
   height:auto;
   pointer-events:none;
   user-select:none;
-  z-index:1;                 /* behind .wrap */
+  z-index:1; /* behind .wrap */
   filter:drop-shadow(0 30px 60px rgba(0,0,0,.6));
 }
 
@@ -156,7 +156,6 @@ button:active{ transform:translateY(1px) }
 
 /* ---- Responsive tweaks ---- */
 @media (max-width: 900px){
-  /* leave .wrap alone so H1 doesn't move */
   .house-bg{
     top:54%;
     transform:translate(-50%, -48%);
@@ -165,7 +164,6 @@ button:active{ transform:translateY(1px) }
 }
 
 @media (max-width: 600px){
-  /* leave .wrap alone so H1 doesn't move */
   .house-bg{
     top:58%;
     transform:translate(-50%, -52%);
@@ -181,7 +179,13 @@ button:active{ transform:translateY(1px) }
   .wilson-corner p{ font-size:13px; max-width:140px }
 }
 
-/* ---- Only move the upload card down ---- */
-.card{ margin-top:28vh !important; }           /* desktop/tablet */
-@media (max-width: 900px){ .card{ margin-top:28vh !important; } }
-@media (max-width: 600px){ .card{ margin-top:30vh !important; } }
+/* ---- Lower the upload card only ---- */
+main.wrap > form.card{
+  margin-top: 32vh !important; /* desktop/tablet */
+}
+@media (max-width: 900px){
+  main.wrap > form.card{ margin-top: 36vh !important; }
+}
+@media (max-width: 600px){
+  main.wrap > form.card{ margin-top: 38vh !important; }
+}

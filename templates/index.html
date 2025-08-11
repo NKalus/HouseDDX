@@ -5,21 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>House DDX</title>
 
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='urllogo.png') }}?v=18" />
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=18" />
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='urllogo.png') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
-  <!-- House image BEHIND content with automatic fallback path -->
+  <!-- House background image -->
   <img
     class="house-bg"
-    src="{{ url_for('static', filename='house-md.png') }}?v=18"
-    onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/house-md.png') }}?v=18';"
+    src="{{ url_for('static', filename='house-md.png') }}"
+    onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/house-md.png') }}';"
     alt="House" />
 
   <main class="wrap">
     <h1>Upload an Image for House to Diagnose</h1>
 
-    <form method="POST" action="/" enctype="multipart/form-data" class="card">
+    <form method="POST" enctype="multipart/form-data" class="card">
       <div class="row">
         <input type="file" name="image" accept="image/*" required />
         <button type="submit">Differential Diagnosis... Go!</button>
@@ -39,7 +39,7 @@
     {% endif %}
   </main>
 
-  <!-- Wilson corner widget (unchanged) -->
+  <!-- Wilson corner widget -->
   <div class="wilson-corner">
     <img src="{{ url_for('static', filename='wilson.png') }}" alt="Dr. Wilson" />
     <p>I too am on this website</p>

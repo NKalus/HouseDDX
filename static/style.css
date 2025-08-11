@@ -1,158 +1,46 @@
-/* ---- Base ---- */
-:root{
-  --bg:#0f0f0f;
-  --card:#171717;
-  --card-2:#1d1d1d;
-  --text:#f2f2f2;
-  --muted:#b8b8b8;
-  --accent:#f2c200;
-  --accent-shadow:rgba(242,194,0,.35);
-  --teal:#5fe1ff;
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #111;
+  color: #fff;
+  text-align: center;
 }
 
-*{ box-sizing:border-box }
-html,body{ height:100% }
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-  overflow-x:hidden;
+h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-top: 40px;
 }
 
-/* keep random <img> from affecting layout */
-img{ max-width:100%; height:auto }
-.house-bg, .wilson-corner img{ max-width:none }
-
-/* ---- House background image (fixed, behind UI) ---- */
-/* Mobile-first default (phones) */
-.house-bg{
-  position:fixed;
-  left:50%;
-  top:72%;                              /* lower on phones so head is below header */
-  transform:translate(-50%, -52%);
-  width:min(90vw, 600px);
-  height:auto;
-  pointer-events:none;
-  user-select:none;
-  z-index:1;                             /* behind .wrap (which is z-index:2) */
-  filter:drop-shadow(0 30px 60px rgba(0,0,0,.6));
+form.card {
+  background-color: rgba(0, 0, 0, 0.85);
+  display: inline-block;
+  padding: 20px;
+  border-radius: 20px;
+  margin-top: 50px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
 }
 
-/* ---- Content wrapper (above House) ---- */
-.wrap{
-  position:relative;
-  z-index:2;
-  max-width:1100px;
-  margin:18vh auto 12vh;
-  padding:0 24px;
-  text-align:center;
+button {
+  background-color: #f5c400;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 0 15px rgba(245, 196, 0, 0.6);
 }
 
-/* ---- Header ---- */
-h1{
-  margin:0 0 28px;
-  font-weight:800;
-  font-size:clamp(28px, 4.8vw, 56px);
-  letter-spacing:.2px;
-  text-shadow:0 2px 0 rgba(0,0,0,.35);
+button:hover {
+  background-color: #ffdd33;
 }
 
-/* ---- Upload card ---- */
-.card{
-  margin-inline:auto;
-  background:linear-gradient(180deg, var(--card), var(--card-2));
-  border-radius:18px;
-  padding:18px;
-  box-shadow:0 24px 60px rgba(0,0,0,.45), 0 10px 24px rgba(0,0,0,.35);
-  width:min(900px, 92vw);
-}
-
-.card .row{
-  display:flex;
-  gap:14px;
-  justify-content:center;
-  align-items:center;
-  flex-wrap:wrap;
-}
-
-input[type="file"]{
-  appearance:none;
-  border:none;
-  outline:none;
-  background:#111;
-  color:var(--muted);
-  padding:12px 14px;
-  border-radius:12px;
-  width:min(520px, 78vw);
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
-}
-
-button{
-  appearance:none;
-  border:none;
-  outline:none;
-  cursor:pointer;
-  font-weight:700;
-  color:#111;
-  background:var(--accent);
-  padding:12px 18px;
-  border-radius:12px;
-  white-space:nowrap;
-  box-shadow:0 10px 30px var(--accent-shadow), 0 2px 0 rgba(0,0,0,.35) inset;
-  transition:transform .06s ease;
-}
-button:active{ transform:translateY(1px) }
-
-/* ---- Disclaimer ---- */
-.disclaimer{
-  color:var(--muted);
-  margin:16px 0 0;
-}
-
-/* ---- Diagnosis card ---- */
-.dx{ margin-top:28px; text-align:left }
-.dx h2{ margin:0 0 10px; color:var(--teal); font-size:22px }
-.dx p{ margin:0; font-size:18px }
-.quote{ margin:14px 0 0; color:var(--muted); font-style:italic }
-
-/* ---- Wilson widget ---- */
-.wilson-corner{
-  position:fixed;
-  right:16px;
-  bottom:16px;
-  z-index:30;
-  background:rgba(0,0,0,.6);
-  backdrop-filter:saturate(140%) blur(6px);
-  border-radius:16px;
-  padding:8px 10px 10px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  box-shadow:0 12px 30px rgba(0,0,0,.45);
-}
-.wilson-corner img{
-  width:64px; height:64px; object-fit:cover;
-  border-radius:10px; box-shadow:0 6px 16px rgba(0,0,0,.45);
-}
-.wilson-corner p{ margin:0; color:#fff; font-weight:600; font-size:14px; max-width:160px }
-
-/* ---------- Responsive layout ---------- */
-
-/* DESKTOP (≥901px): keep header above head; House a bit lower & larger */
-@media (min-width: 901px){
-  .wrap h1{ margin-top:-2vh; }               /* subtle lift */
-  main.wrap > form.card{ margin-top:1.2rem; }
-  .house-bg{
-    top:68%;                                  /* lower House so title clears his head */
-    transform:translate(-50%, -50%);
-    width:min(78vw, 780px);
-    max-width:1000px;
-  }
-}
-
-/* MOBILE (≤900px): push upload card + disclaimer to knee level */
-@media (max-width: 900px){
-  main.wrap > form.card{ margin-top:34vh !important; }  /* 32–36vh to fine-tune */
-  .disclaimer{ margin-top:3.5vh !important; }
-}
+.result {
+  margin-top: 20px;
+  background-color: rgba(0, 0, 0, 0.85);
+  padding: 15px;
+  border-radius: 12px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align

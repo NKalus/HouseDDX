@@ -6,10 +6,11 @@
   <title>House DDX</title>
 
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='urllogo.png') }}" />
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=200" />
+  <!-- cache-bust so you see changes -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=202" />
 </head>
 <body>
-  <!-- Only background image -->
+  <!-- Background House image (with fallback path) -->
   <img
     class="house-bg"
     src="{{ url_for('static', filename='house-md.png') }}"
@@ -39,7 +40,7 @@
     {% endif %}
   </main>
 
-  <!-- Only Wilson widget image -->
+  <!-- Wilson corner widget -->
   <div class="wilson-corner">
     <img src="{{ url_for('static', filename='wilson.png') }}" alt="Dr. Wilson" />
     <p>I too am on this website</p>

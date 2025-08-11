@@ -2,30 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>HouseDDX</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=1">
-    <link rel="icon" href="{{ url_for('static', filename='urllogo.png') }}">
+    <title>House of House</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <main class="wrap">
-        <h1>Upload an Image for House to Diagnose</h1>
-        <form class="card" method="POST" enctype="multipart/form-data">
+    <img src="/static/img/house-md.png" alt="House" class="house-bg">
+
+    <div class="container">
+        <form method="POST" enctype="multipart/form-data" class="upload-form">
             <input type="file" name="image" required>
-            <button type="submit">Differential Diagnosis… Go!</button>
+            <button type="submit">Differential Diagnosis... Go!</button>
         </form>
         <p class="disclaimer">Not medical advice. Obviously.</p>
 
         {% if diagnosis %}
-        <div class="result-card">
+        <div class="result">
             <h2>Diagnosis:</h2>
             <p>{{ diagnosis }}</p>
         </div>
         {% endif %}
-    </main>
+    </div>
 
-    <img src="{{ url_for('static', filename='house.png') }}" alt="House" class="house-bg">
-    <div class="watermark">
-        <img src="{{ url_for('static', filename='wilson.png') }}" alt="Wilson">
+    <div class="caption">
+        <img src="/static/img/wilson.png" alt="Wilson">
         <span>I too am on this website</span>
     </div>
 </body>

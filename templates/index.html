@@ -1,28 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>House DDX</title>
-
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='urllogo.png') }}?v=16" />
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=16" />
+    <meta charset="UTF-8">
+    <title>House of House</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=1">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
 <body>
-  <!-- House hero image BEHIND content -->
-  <img class="house-bg" src="{{ url_for('static', filename='house-md.png') }}" alt="House" />
+    <main class="wrap">
+        <h1>Upload an Image for House to Diagnose</h1>
+        <form class="card" method="POST" enctype="multipart/form-data">
+            <input type="file" name="image" required>
+            <button type="submit">Differential Diagnosis… Go!</button>
+        </form>
+        <p class="disclaimer">Not medical advice. Obviously.</p>
 
-  <main class="wrap">
-    <!-- Header removed on purpose -->
+        {% if diagnosis %}
+        <div class="result-card">
+            <h2>Diagnosis:</h2>
+            <p>{{ diagnosis }}</p>
+        </div>
+        {% endif %}
+    </main>
 
-    <form method="POST" action="/" enctype="multipart/form-data" class="card">
-      <div class="row">
-        <input type="file" name="image" accept="image/*" required />
-        <button type="submit">Differential Diagnosis... Go!</button>
-      </div>
-    </form>
-
-    <p class="disclaimer">Not medical advice. Obviously.</p>
-
-    {% if diagnosis %}
-    <section cl
+    <img src="{{ url_for('static', filename='house.png') }}" alt="House" class="house-bg">
+    <div class="watermark">
+        <img src="{{ url_for('static', filename='wilson.png') }}" alt="Wilson">
+        <span>I too am on this website</span>
+    </div>
+</body>
+</html>

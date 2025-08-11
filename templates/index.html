@@ -1,53 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>House DDX</title>
-
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='urllogo.png') }}" />
-  <!-- cache-bust so you actually see changes -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=206" />
+    <meta charset="UTF-8">
+    <title>HouseDDX</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ url_for('static', filename='img/urllogo.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=209">
 </head>
 <body>
-  <!-- Background House image (fallback to /static/img/) -->
-  <img
-    class="house-bg"
-    src="{{ url_for('static', filename='house-md.png') }}"
-    onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/house-md.png') }}';"
-    alt="House" />
+    <main class="wrap">
+        <h1>Upload an Image for House to Diagnose</h1>
+        
+        <form class="card" method="POST" enctype="multipart/form-data">
+            <input type="file" name="image" id="image" required>
+            <button type="submit">Differential Diagnosis... Go!</button>
+        </form>
 
-  <main class="wrap">
-    <h1>Upload an Image for House to Diagnose</h1>
+        <p class="disclaimer">Not medical advice. Obviously.</p>
 
-    <form method="POST" action="/" enctype="multipart/form-data" class="card">
-      <div class="row">
-        <input type="file" name="image" accept="image/*" required />
-        <button type="submit">Differential Diagnosis... Go!</button>
-      </div>
-    </form>
+        {% if diagnosis %}
+        <div class="card result">
+            <h2><span class="label">Diagnosis:</span></h2>
+            <p>{{ diagnosis }}</p>
+            {% if quote %}
+            <p class="quote"><em>"{{ quote }}"</em></p>
+            {% endif %}
+        </div>
+        {% endif %}
 
-    <p class="disclaimer">Not medical advice. Obviously.</p>
+        <!-- House image -->
+        <img src="{{ url_for('static', filename='img/house-md.png') }}" alt="House" class="house-bg">
 
-    {% if diagnosis %}
-    <section class="dx card">
-      <h2>Diagnosis:</h2>
-      <p>{{ diagnosis }}</p>
-      {% if random_quote %}
-      <blockquote class="quote">“{{ random_quote }}”</blockquote>
-      {% endif %}
-    </section>
-    {% endif %}
-
-    {% if error %}
-    <p style="color:#ffb4b4;margin-top:12px">{{ error }}</p>
-    {% endif %}
-  </main>
-
-  <!-- Wilson corner widget -->
-  <div class="wilson-corner">
-    <img src="{{ url_for('static', filename='wilson.png') }}" alt="Dr. Wilson" />
-    <p>I too am on this website</p>
-  </div>
+        <!-- Wilson bottom-right corner -->
+        <div class="wilson-corner">
+            <img src="{{ url_for('static', filename='img/wilson.png') }}" alt="Wilson">
+            <span>I too am on this website</span>
+        </div>
+    </main>
 </body>
 </html>

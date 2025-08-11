@@ -6,14 +6,17 @@
   <title>House DDX</title>
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='urllogo.png') }}?v=13" />
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='urllogo.png') }}?v=revert" />
 
-  <!-- Stylesheet (cache-busted) -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=13" />
+  <!-- Styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=revert" />
 </head>
 <body>
-  <!-- House hero image lives behind everything -->
-  <img class="house-bg" src="{{ url_for('static', filename='house-md.png') }}" alt="House" />
+  <!-- House hero image behind everything -->
+  <img
+    class="house-bg"
+    src="{{ url_for('static', filename='house-md.png') }}"
+    alt="House" />
 
   <main class="wrap">
     <h1>Upload an Image for House to Diagnose</h1>

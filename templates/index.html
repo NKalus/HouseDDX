@@ -1,49 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>House DDX</title>
-
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='urllogo.png') }}?v=20" />
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=20" />
+    <meta charset="UTF-8">
+    <title>House of House</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="icon" type="image/png" href="/static/img/urllogo.png">
 </head>
 <body>
-  <!-- Try /static/img/house-md.png first; if it 404s, fall back to /static/house-md.png -->
-  <img
-    class="house-bg"
-    src="{{ url_for('static', filename='img/house-md.png') }}"
-    alt="House"
-    onerror="this.onerror=null; this.src='{{ url_for('static', filename='house-md.png') }}';"
-  />
+    <img src="/static/img/house-md.png" alt="House" class="house-bg">
 
-  <main class="wrap">
-    <!-- Keep or remove this header; your call -->
-    <h1>Upload an Image for House to Diagnose</h1>
+    <div class="container">
+        <form method="POST" enctype="multipart/form-data" class="upload-form">
+            <input type="file" name="image" required>
+            <button type="submit">Differential Diagnosis... Go!</button>
+        </form>
+        <p class="disclaimer">Not medical advice. Obviously.</p>
 
-    <form method="POST" action="/" enctype="multipart/form-data" class="card">
-      <div class="row">
-        <input type="file" name="image" accept="image/*" required />
-        <button type="submit">Differential Diagnosis... Go!</button>
-      </div>
-    </form>
+        {% if diagnosis %}
+        <div class="result">
+            <h2>Diagnosis:</h2>
+            <p>{{ diagnosis }}</p>
+        </div>
+        {% endif %}
+    </div>
 
-    <p class="disclaimer">Not medical advice. Obviously.</p>
-
-    {% if diagnosis %}
-    <section class="dx card">
-      <h2>Diagnosis:</h2>
-      <p>{{ diagnosis }}</p>
-      {% if random_quote %}
-      <blockquote class="quote">“{{ random_quote }}”</blockquote>
-      {% endif %}
-    </section>
-    {% endif %}
-  </main>
-
-  <div class="wilson-corner">
-    <img src="{{ url_for('static', filename='wilson.png') }}" alt="Dr. Wilson" />
-    <p>I too am on this website</p>
-  </div>
+    <div class="caption">
+        <img src="/static/img/wilson.png" alt="Wilson">
+        <span>I too am on this website</span>
+    </div>
 </body>
 </html>

@@ -184,4 +184,25 @@ button:active{ transform:translateY(1px) }
     top:52%;
     transform:translate(-50%, -50%);
   }
+  /* MOBILE: drop the upload card + disclaimer to House's knees */
+@media (max-width: 900px){
+  /* keep the header where it is */
+  .wrap{ margin-top:12vh; }
+
+  /* push ONLY the upload card down */
+  main.wrap > form.card{
+    margin-top: 24vh !important;   /* try 22–26vh to fine-tune */
+  }
+
+  /* keep the disclaimer just below the card */
+  .disclaimer{
+    margin-top: 3vh !important;    /* increase if it still overlaps */
+  }
+
+  /* keep House centered a touch lower so face stays clear */
+  .house-bg{
+    top: 64%;
+    transform: translate(-50%, -52%);
+  }
+
 }

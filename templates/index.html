@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>House DDX</title>
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png"
-        href="{{ url_for('static', filename='img/urllogo.png') }}" />
+  <!-- Favicon (you said the file exists in static/) -->
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='urllogo.png') }}" />
 
-  <!-- Styles -->
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
-  <!-- HOUSE: large, behind the UI -->
+  <!-- House hero image lives BEHIND everything -->
   <img
     class="house-bg"
     src="{{ url_for('static', filename='house-md.png') }}"
@@ -22,22 +20,17 @@
   <main class="wrap">
     <h1>Upload an Image for House to Diagnose</h1>
 
-    <form method="POST" action="/" enctype="multipart/form-data" class="card form-card">
-      <label class="file-wrap">
+    <form method="POST" action="/" enctype="multipart/form-data" class="card">
+      <div class="row">
         <input type="file" name="image" accept="image/*" required />
-        <span class="file-label">Choose File</span>
-        <span class="file-chosen">No file chosen</span>
-      </label>
-
-      <button type="submit" class="btn btn-primary">
-        Differential Diagnosis... Go!
-      </button>
+        <button type="submit">Differential Diagnosis... Go!</button>
+      </div>
     </form>
 
     <p class="disclaimer">Not medical advice. Obviously.</p>
 
     {% if diagnosis %}
-    <section class="card dx-card">
+    <section class="dx card">
       <h2>Diagnosis:</h2>
       <p>{{ diagnosis }}</p>
       {% if random_quote %}
@@ -47,22 +40,10 @@
     {% endif %}
   </main>
 
-  <!-- WILSON: fixed badge in the corner -->
-  <div class="wilson">
+  <!-- Wilson corner widget -->
+  <div class="wilson-corner">
     <img src="{{ url_for('static', filename='wilson.png') }}" alt="Dr. Wilson" />
     <p>I too am on this website</p>
   </div>
-
-  <script>
-    // Cosmetic: reflect the chosen filename next to the custom file button
-    (function () {
-      const input = document.querySelector('input[type="file"]');
-      const chosen = document.querySelector('.file-chosen');
-      if (!input || !chosen) return;
-      input.addEventListener('change', () => {
-        chosen.textContent = input.files?.[0]?.name || 'No file chosen';
-      });
-    })();
-  </script>
 </body>
 </html>

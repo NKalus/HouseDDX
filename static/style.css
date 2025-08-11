@@ -1,3 +1,4 @@
+/* ---- Base ---- */
 :root{
   --bg:#0f0f0f;
   --card:#171717;
@@ -19,16 +20,17 @@ body{
   overflow-x:hidden;
 }
 
-/* Content above the image */
+/* Content wrapper above House image */
 .wrap{
   position:relative;
-  z-index:2;
+  z-index:2;                     /* stays above the House image */
   max-width:1100px;
-  margin:16vh auto 12vh;
+  margin:18vh auto 12vh;         /* use your last working spacing */
   padding:0 24px;
   text-align:center;
 }
 
+/* Headline */
 h1{
   margin:0 0 28px;
   font-weight:800;
@@ -37,6 +39,7 @@ h1{
   text-shadow:0 2px 0 rgba(0,0,0,.35);
 }
 
+/* Upload card */
 .card{
   margin-inline:auto;
   background:linear-gradient(180deg, var(--card), var(--card-2));
@@ -46,37 +49,82 @@ h1{
   width:min(900px, 92vw);
 }
 .card .row{
-  display:flex; gap:14px; justify-content:center; align-items:center; flex-wrap:wrap;
+  display:flex;
+  gap:14px;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
 }
 input[type="file"]{
-  appearance:none; border:none; outline:none; background:#111; color:var(--muted);
-  padding:12px 14px; border-radius:12px; width:min(520px, 78vw);
+  appearance:none;
+  border:none;
+  outline:none;
+  background:#111;
+  color:var(--muted);
+  padding:12px 14px;
+  border-radius:12px;
+  width:min(520px, 78vw);
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
 }
 button{
-  appearance:none; border:none; outline:none; cursor:pointer; font-weight:700; color:#111;
-  background:var(--accent); padding:12px 18px; border-radius:12px; white-space:nowrap;
+  appearance:none;
+  border:none;
+  outline:none;
+  cursor:pointer;
+  font-weight:700;
+  color:#111;
+  background:var(--accent);
+  padding:12px 18px;
+  border-radius:12px;
+  white-space:nowrap;
   box-shadow:0 10px 30px var(--accent-shadow), 0 2px 0 rgba(0,0,0,.35) inset;
   transition:transform .06s ease;
 }
 button:active{ transform:translateY(1px) }
 
-/* House image stays centered BEHIND content */
+/* House image (behind everything) */
 .house-bg{
-  position:fixed;                  /* ensures it’s visible regardless of scroll */
-  left:50%; top:50%;
+  position:fixed;                /* keeps it centered in viewport */
+  left:50%;
+  top:50%;
   transform:translate(-50%, -50%);
   width:min(78vw, 780px);
   max-width:1000px;
   height:auto;
-  pointer-events:none; user-select:none;
-  z-index:1;                       /* below .wrap (z-index:2) */
+  pointer-events:none;
+  user-select:none;
+  z-index:1;                     /* wrap is z-index:2 */
   filter:drop-shadow(0 30px 60px rgba(0,0,0,.6));
 }
 
-/* Diagnosis / disclaimer */
+/* Diagnosis card */
 .dx{ margin-top:18px; text-align:left }
 .dx h2{ margin:0 0 10px; color:var(--teal); font-size:22px }
 .dx p{ margin:0; font-size:18px }
 .quote{ margin:14px 0 0; color:var(--muted); font-style:italic }
-.disclaimer{ color:
+
+/* Disclaimer */
+.disclaimer{ color:var(--muted); margin:16px 0 0 }
+
+/* Wilson widget (unchanged) */
+.wilson-corner{
+  position:fixed;
+  right:16px;
+  bottom:16px;
+  z-index:30;
+  background:rgba(0,0,0,.6);
+  backdrop-filter:saturate(140%) blur(6px);
+  border-radius:16px;
+  padding:8px 10px 10px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  box-shadow:0 12px 30px rgba(0,0,0,.45);
+}
+.wilson-corner img{ display:block; width:64px; height:64px; object-fit:cover; border-radius:10px; box-shadow:0 6px 16px rgba(0,0,0,.45) }
+.wilson-corner p{ margin:0; color:#fff; font-weight:600; font-size:14px; max-width:160px }
+
+/* Mobile tweaks (optional) */
+@media (max-width: 900px){
+  .house-bg{ top:64%; transform:translate(-50%, -52%); width:min(90vw, 600px); }
+}

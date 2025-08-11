@@ -22,9 +22,9 @@ body{
 
 .wrap{
   position:relative;
-  z-index:2; /* above House image */
+  z-index:2;                 /* above House image */
   max-width:1100px;
-  margin:18vh auto 12vh; /* H1 baseline */
+  margin:18vh auto 12vh;     /* card stays high and overlaps House */
   padding:0 24px;
   text-align:center;
 }
@@ -92,14 +92,14 @@ button:active{ transform:translateY(1px) }
 .house-bg{
   position:absolute;
   left:50%;
-  top:46%;
+  top:46%;                         /* face lands under the card */
   transform:translate(-50%, -42%);
   width:min(78vw, 780px);
   max-width:1000px;
   height:auto;
   pointer-events:none;
   user-select:none;
-  z-index:1; /* behind .wrap */
+  z-index:1;                        /* behind .wrap */
   filter:drop-shadow(0 30px 60px rgba(0,0,0,.6));
 }
 
@@ -156,6 +156,7 @@ button:active{ transform:translateY(1px) }
 
 /* ---- Responsive tweaks ---- */
 @media (max-width: 900px){
+  .wrap{ margin-top:8vh; }          /* card still overlaps on mobile */
   .house-bg{
     top:54%;
     transform:translate(-50%, -48%);
@@ -177,15 +178,4 @@ button:active{ transform:translateY(1px) }
   }
   .wilson-corner img{ width:56px; height:56px }
   .wilson-corner p{ font-size:13px; max-width:140px }
-}
-
-/* ---- Lower the upload card only ---- */
-main.wrap > form.card{
-  margin-top: 32vh !important; /* desktop/tablet */
-}
-@media (max-width: 900px){
-  main.wrap > form.card{ margin-top: 36vh !important; }
-}
-@media (max-width: 600px){
-  main.wrap > form.card{ margin-top: 38vh !important; }
 }

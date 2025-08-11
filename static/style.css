@@ -10,8 +10,8 @@
   --teal:#5fe1ff;
 }
 
-*{box-sizing:border-box}
-html,body{height:100%}
+*{ box-sizing:border-box }
+html,body{ height:100% }
 body{
   margin:0;
   background:var(--bg);
@@ -20,11 +20,12 @@ body{
   overflow-x:hidden;
 }
 
+/* Content wrapper above House image */
 .wrap{
   position:relative;
-  z-index:2;                 /* above House image */
+  z-index:2;
   max-width:1100px;
-  margin:18vh auto 12vh;     /* card stays high and overlaps House */
+  margin:16vh auto 12vh;       /* baseline spacing; adjusted by media queries */
   padding:0 24px;
   text-align:center;
 }
@@ -38,7 +39,7 @@ h1{
   text-shadow:0 2px 0 rgba(0,0,0,.35);
 }
 
-/* ---- Card / Form ---- */
+/* ---- Upload card ---- */
 .card{
   margin-inline:auto;
   background:linear-gradient(180deg, var(--card), var(--card-2));
@@ -92,19 +93,19 @@ button:active{ transform:translateY(1px) }
 .house-bg{
   position:absolute;
   left:50%;
-  top:46%;                         /* face lands under the card */
-  transform:translate(-50%, -42%);
+  top:50%;
+  transform:translate(-50%, -50%);
   width:min(78vw, 780px);
   max-width:1000px;
   height:auto;
   pointer-events:none;
   user-select:none;
-  z-index:1;                        /* behind .wrap */
+  z-index:1;
   filter:drop-shadow(0 30px 60px rgba(0,0,0,.6));
 }
 
 /* ---- Diagnosis card ---- */
-.dx{ margin-top:28px; text-align:left }
+.dx{ margin-top:18px; text-align:left }
 .dx h2{
   margin:0 0 10px;
   color:var(--teal);
@@ -121,6 +122,7 @@ button:active{ transform:translateY(1px) }
 .disclaimer{
   color:var(--muted);
   margin:16px 0 0;
+  text-shadow:0 2px 0 rgba(0,0,0,.35);
 }
 
 /* ---- Wilson widget ---- */
@@ -154,28 +156,32 @@ button:active{ transform:translateY(1px) }
   max-width:160px;
 }
 
-/* ---- Responsive tweaks ---- */
+/* ---------- Responsive layout ---------- */
+
+/* Phones & small tablets */
 @media (max-width: 900px){
-  .wrap{ margin-top:8vh; }          /* card still overlaps on mobile */
+  .wrap{ margin-top:12vh; }                 /* keep header comfortable on mobile */
+  .card{ margin-top:2vh; }                   /* card close to header */
   .house-bg{
-    top:54%;
-    transform:translate(-50%, -48%);
-    width:min(88vw, 680px);
+    top:64%;
+    transform:translate(-50%, -52%);
+    width:min(90vw, 600px);
   }
+  .disclaimer{ margin-top:14px; }
+  .dx{ margin-top:16px; }
 }
 
-@media (max-width: 600px){
+/* Desktop polish only */
+@media (min-width: 901px){
+  /* raise header a bit */
+  .wrap h1{ margin-top:-3vh; }
+
+  /* give card breathing room below header */
+  main.wrap > form.card{ margin-top:3.5vh; }
+
+  /* drop House slightly so face is clear of header */
   .house-bg{
-    top:58%;
-    transform:translate(-50%, -52%);
-    width:min(95vw, 560px);
+    top:52%;
+    transform:translate(-50%, -50%);
   }
-  .card{ padding:14px }
-  input[type="file"]{ width:100% }
-  .wilson-corner{
-    right:12px; bottom:12px;
-    padding:8px 9px;
-  }
-  .wilson-corner img{ width:56px; height:56px }
-  .wilson-corner p{ font-size:13px; max-width:140px }
 }

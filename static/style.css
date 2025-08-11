@@ -1,182 +1,170 @@
-:root{
-  --bg:#111;
-  --surface:#1a1a1a;
-  --text:#f3f3f3;
-  --muted:#bdbdbd;
-  --accent:#f1c40f;
-  --accent-dark:#c9a40d;
-  --shadow:0 12px 30px rgba(0,0,0,.45), 0 3px 10px rgba(0,0,0,.25);
+:root {
+  --bg: #111;
+  --card: #1a1a1a;
+  --text: #eee;
+  --muted: #bdbdbd;
+  --brand: #f4c019;
+  --brand-shadow: rgba(244, 192, 25, 0.35);
 }
 
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.4;
+  overflow-x: hidden;
 }
 
-/* ---------- Layout ---------- */
-.hero{
-  position:relative;
-  min-height:100svh;
-  display:grid;
-  place-items:center;
-  overflow:hidden;
-  /* Give room so House’s head sits above the title */
-  padding-top: clamp(40px, 8svh, 120px);
+/* House image */
+.house-image {
+  position: absolute;
+  left: 50%;
+  top: 58%; /* Lower so face is above form */
+  transform: translate(-50%, -50%);
+  width: min(50vw, 700px); /* Bigger on desktop */
+  height: auto;
+  z-index: 0;
+  pointer-events: none;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.45));
 }
 
-/* House image behind content */
-.house-layer{
-  position:absolute;
-  inset:auto 50% 0 50%;
-  transform:translate(-50%, 0);
-  width: clamp(520px, 58vw, 980px);
-  height: clamp(520px, 65vh, 980px);
-  background-repeat:no-repeat;
-  background-size:contain;
-  background-position:center top;
-  filter: drop-shadow(0 18px 28px rgba(0,0,0,.5));
-  z-index:0;            /* behind the UI */
-  pointer-events:none;
-  top: clamp(-40px, -4svh, 0);   /* nudge up so his face is above the title */
+/* Main container */
+.container {
+  position: relative;
+  z-index: 2;
+  width: min(960px, 92vw);
+  margin: clamp(20px, 9vh, 80px) auto 0; /* Push content slightly lower */
+  text-align: center;
 }
 
-/* Foreground stack */
-.stack{
-  position:relative;
-  z-index:2;
-  text-align:center;
-  max-width:min(1100px, 92vw);
-  width:100%;
+h1 {
+  font-size: clamp(28px, 4.3vw, 44px);
+  margin: 0 0 22px;
+  letter-spacing: 0.2px;
 }
 
-h1{
-  margin:0 0 20px;
-  line-height:1.15;
-  font-weight:800;
-  letter-spacing:.2px;
-  font-size:clamp(26px, 3.4vw, 42px);
-  text-shadow: 0 2px 8px rgba(0,0,0,.35);
+/* Upload form */
+.upload-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 14px;
+  padding: 16px 18px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+  margin-inline: auto;
+  width: max(520px, 54vw);
 }
 
-/* Form card */
-.card{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  justify-content:center;
-  background:rgba(0,0,0,.55);
-  border-radius:14px;
-  padding:10px 14px;
-  box-shadow:var(--shadow);
-  margin-inline:auto;
-  width:fit-content;
+.file-wrap input[type="file"] {
+  color: var(--text);
+  background: #222;
+  border: 1px solid #2b2b2b;
+  border-radius: 10px;
+  padding: 8px 10px;
 }
 
-.card input[type="file"]{
-  color:var(--text);
-  background:#222;
-  border:1px solid #333;
-  border-radius:10px;
-  padding:10px 12px;
+.cta {
+  appearance: none;
+  border: 0;
+  border-radius: 12px;
+  padding: 12px 22px;
+  font-weight: 700;
+  background: var(--brand);
+  color: #231d08;
+  cursor: pointer;
+  box-shadow: 0 10px 24px var(--brand-shadow);
+  transition: transform 0.06s ease, filter 0.06s ease;
 }
+.cta:hover { transform: translateY(-1px); filter: brightness(1.02); }
+.cta:active { transform: translateY(0); }
 
-.card button{
-  background:var(--accent);
-  border:none;
-  color:#111;
-  font-weight:700;
-  padding:12px 18px;
-  border-radius:12px;
-  cursor:pointer;
-  transition:.15s transform ease, .2s background ease, .2s box-shadow ease;
-  box-shadow: 0 12px 26px rgba(241,196,15,.15), 0 4px 10px rgba(0,0,0,.25);
-}
-.card button:hover{ background:var(--accent-dark); transform:translateY(-1px); }
-
-.disclaimer{
-  margin:16px auto 0;
-  color:var(--muted);
-  font-size:14px;
-  text-shadow: 0 1px 4px rgba(0,0,0,.35);
+.disclaimer {
+  margin: 16px 0 0;
+  color: var(--muted);
 }
 
 /* Diagnosis result */
-.dx-card{
-  margin:28px auto 0;
-  padding:18px 20px;
-  background:#1e1e1e;
-  border-radius:14px;
-  max-width:min(980px, 92vw);
-  box-shadow:var(--shadow);
-  text-align:left;
+.result-card {
+  width: min(900px, 92vw);
+  margin: 26px auto 0;
+  background: #1d1d1d;
+  border-radius: 14px;
+  padding: 18px 20px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.32);
+  text-align: left;
 }
-.dx-card h2{ margin:0 0 10px; }
-.dx-card blockquote{
-  margin:12px 0 0;
-  color:#d6d6d6;
-  font-style:italic;
+.result-card h2 {
+  margin: 0 0 8px;
+  color: #86e1ff;
+  font-size: clamp(18px, 2.6vw, 22px);
 }
-.dx-card .again{
-  display:inline-block;
-  margin-top:14px;
-  color:#111;
-  background:var(--accent);
-  text-decoration:none;
-  padding:8px 12px;
-  border-radius:10px;
-  font-weight:700;
+.result-card p { margin: 0; }
+
+/* Wilson corner */
+.wilson-corner {
+  position: fixed;
+  right: max(12px, env(safe-area-inset-right));
+  bottom: max(12px, env(safe-area-inset-bottom));
+  width: 112px;
+  background: rgba(0, 0, 0, 0.65);
+  border-radius: 12px;
+  padding: 8px;
+  text-align: center;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.38);
+  z-index: 3;
+}
+.wilson-corner img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+.wilson-corner p {
+  margin: 6px 0 2px;
+  font-size: 12px;
+  line-height: 1.1;
+  color: #eee;
 }
 
-/* Wilson cameo */
-.wilson-corner{
-  position:fixed;
-  right:16px;
-  bottom:16px;
-  width:112px;
-  z-index:3;
-  text-align:center;
-  background:rgba(0,0,0,.55);
-  border-radius:14px;
-  padding:8px 8px 10px;
-  box-shadow:var(--shadow);
-  backdrop-filter: blur(4px);
-}
-.wilson-corner img{
-  width:100%;
-  height:auto;
-  display:block;
-  border-radius:10px;
-}
-.wilson-corner p{
-  margin:6px 0 0;
-  font-size:12px;
-  color:#f5f5f5;
-  opacity:.95;
-}
-
-/* ---------- Mobile tweaks ---------- */
-@media (max-width: 740px){
-  .house-layer{
-    width: clamp(380px, 88vw, 620px);
-    height: clamp(380px, 72vh, 620px);
-    top: clamp(-24px, -3svh, 0);
-    opacity:.98;
+/* Mobile tweaks */
+@media (max-width: 640px) {
+  .house-image {
+    width: 84vw; /* Bigger on mobile too */
+    top: 66%; /* Lower */
   }
 
-  .card{
-    flex-direction:column;
-    gap:10px;
-    padding:12px;
+  .container {
+    margin-top: 12vh; /* Push content further down */
+    width: 92vw;
   }
 
-  .wilson-corner{
+  h1 { font-size: clamp(26px, 6vw, 32px); }
+
+  .upload-card {
+    width: 92vw;
+    padding: 14px;
+    gap: 10px;
+  }
+
+  .cta { width: 100%; }
+
+  .wilson-corner {
     width: 96px;
-    right:12px;
-    bottom:12px;
+    padding: 6px;
   }
-  .wilson-corner p{ font-size:11px; }
+  .wilson-corner p { font-size: 11px; }
+}
+
+@media (max-width: 380px) {
+  .house-image {
+    width: 88vw;
+    top: 68%;
+  }
+  .upload-card { gap: 8px; }
 }

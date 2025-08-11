@@ -7,10 +7,10 @@
 
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='urllogo.png') }}" />
   <!-- cache-bust so you actually see changes -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=204" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=206" />
 </head>
 <body>
-  <!-- Background House image (falls back to /static/img/ if /static/ is missing) -->
+  <!-- Background House image (fallback to /static/img/) -->
   <img
     class="house-bg"
     src="{{ url_for('static', filename='house-md.png') }}"
@@ -37,6 +37,10 @@
       <blockquote class="quote">“{{ random_quote }}”</blockquote>
       {% endif %}
     </section>
+    {% endif %}
+
+    {% if error %}
+    <p style="color:#ffb4b4;margin-top:12px">{{ error }}</p>
     {% endif %}
   </main>
 

@@ -5,17 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>House DDX</title>
 
-  <!-- Favicon (you said the file exists in static/) -->
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='urllogo.png') }}" />
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='urllogo.png') }}?v=2" />
 
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <!-- Stylesheet with cache-buster -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=10" />
 </head>
 <body>
-  <!-- House hero image lives BEHIND everything -->
-  <img
-    class="house-bg"
-    src="{{ url_for('static', filename='house-md.png') }}"
-    alt="House" />
+  <!-- House hero image behind everything -->
+  <img class="house-bg" src="{{ url_for('static', filename='house-md.png') }}" alt="House" />
 
   <main class="wrap">
     <h1>Upload an Image for House to Diagnose</h1>
@@ -40,7 +38,7 @@
     {% endif %}
   </main>
 
-  <!-- Wilson corner widget -->
+  <!-- Wilson widget -->
   <div class="wilson-corner">
     <img src="{{ url_for('static', filename='wilson.png') }}" alt="Dr. Wilson" />
     <p>I too am on this website</p>

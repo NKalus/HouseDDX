@@ -20,22 +20,22 @@ body{
   overflow-x:hidden;
 }
 
-/* Keep random <img> from affecting layout */
+/* keep random <img> from affecting layout */
 img{ max-width:100%; height:auto }
 .house-bg, .wilson-corner img{ max-width:none }
 
 /* ---- House background image (fixed, behind UI) ---- */
+/* Mobile-first default (phones) */
 .house-bg{
   position:fixed;
   left:50%;
-  top:58%; /* baseline; desktop & mobile adjust below */
-  transform:translate(-50%, -50%);
-  width:min(78vw, 780px);
-  max-width:1000px;
+  top:72%;                              /* lower on phones so head is below header */
+  transform:translate(-50%, -52%);
+  width:min(90vw, 600px);
   height:auto;
   pointer-events:none;
   user-select:none;
-  z-index:1; /* behind .wrap (z-index:2) */
+  z-index:1;                             /* behind .wrap (which is z-index:2) */
   filter:drop-shadow(0 30px 60px rgba(0,0,0,.6));
 }
 
@@ -139,20 +139,20 @@ button:active{ transform:translateY(1px) }
 
 /* ---------- Responsive layout ---------- */
 
-/* DESKTOP: header stays above head; House slightly lower */
+/* DESKTOP (≥901px): keep header above head; House a bit lower & larger */
 @media (min-width: 901px){
-  .wrap h1{ margin-top:-3vh; }       /* lift header a bit */
+  .wrap h1{ margin-top:-2vh; }               /* subtle lift */
   main.wrap > form.card{ margin-top:1.2rem; }
-  .house-bg{ top:66%; }              /* lower House so head clears header */
+  .house-bg{
+    top:68%;                                  /* lower House so title clears his head */
+    transform:translate(-50%, -50%);
+    width:min(78vw, 780px);
+    max-width:1000px;
+  }
 }
 
-/* MOBILE: push card + disclaimer down near knees */
+/* MOBILE (≤900px): push upload card + disclaimer to knee level */
 @media (max-width: 900px){
-  main.wrap > form.card{ margin-top:31vh !important; } /* 30–33vh to fine-tune */
+  main.wrap > form.card{ margin-top:34vh !important; }  /* 32–36vh to fine-tune */
   .disclaimer{ margin-top:3.5vh !important; }
-  .house-bg{
-    top:68%;
-    transform:translate(-50%, -52%);
-    width:min(90vw, 600px);
-  }
 }

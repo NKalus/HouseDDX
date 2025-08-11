@@ -6,11 +6,11 @@
   <title>House DDX</title>
 
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='urllogo.png') }}" />
-  <!-- cache-bust so you see changes -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=202" />
+  <!-- cache-bust so you actually see changes -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=204" />
 </head>
 <body>
-  <!-- Background House image (with fallback path) -->
+  <!-- Background House image (falls back to /static/img/ if /static/ is missing) -->
   <img
     class="house-bg"
     src="{{ url_for('static', filename='house-md.png') }}"

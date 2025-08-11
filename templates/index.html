@@ -1,48 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>House DDX</title>
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/urllogo.png') }}" />
+  <link rel="icon" type="image/png"
+        href="{{ url_for('static', filename='img/urllogo.png') }}" />
 
+  <!-- Styles -->
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
-  <!-- House background image -->
+  <!-- HOUSE: large, behind the UI -->
   <img
-    class="house-image"
+    class="house-bg"
     src="{{ url_for('static', filename='house-md.png') }}"
-    alt="House"
-    aria-hidden="true"
-  />
+    alt="House" />
 
-  <main class="container">
+  <main class="wrap">
     <h1>Upload an Image for House to Diagnose</h1>
 
-    <form method="POST" enctype="multipart/form-data" class="upload-card">
+    <form method="POST" action="/" enctype="multipart/form-data" class="card form-card">
       <label class="file-wrap">
         <input type="file" name="image" accept="image/*" required />
+        <span class="file-label">Choose File</span>
+        <span class="file-chosen">No file chosen</span>
       </label>
-      <button type="submit" class="cta">Differential Diagnosis... Go!</button>
+
+      <button type="submit" class="btn btn-primary">
+        Differential Diagnosis... Go!
+      </button>
     </form>
 
     <p class="disclaimer">Not medical advice. Obviously.</p>
 
     {% if diagnosis %}
-      <section class="result-card">
-        <h2>Diagnosis:</h2>
-        <p>{{ diagnosis }}</p>
-      </section>
+    <section class="card dx-card">
+      <h2>Diagnosis:</h2>
+      <p>{{ diagnosis }}</p>
+      {% if random_quote %}
+      <blockquote class="quote">“{{ random_quote }}”</blockquote>
+      {% endif %}
+    </section>
     {% endif %}
   </main>
 
-  <!-- Wilson corner badge -->
-  <aside class="wilson-corner">
-    <img src="{{ url_for('static', filename='wilson.png') }}" alt="Wilson" />
+  <!-- WILSON: fixed badge in the corner -->
+  <div class="wilson">
+    <img src="{{ url_for('static', filename='wilson.png') }}" alt="Dr. Wilson" />
     <p>I too am on this website</p>
-  </aside>
+  </div>
+
+  <script>
+    // Cosmetic: reflect the chosen filename next to the custom file button
+    (function () {
+      const input = document.querySelector('input[type="file"]');
+      const chosen = document.querySelector('.file-chosen');
+      if (!input || !chosen) return;
+      input.addEventListener('change', () => {
+        chosen.textContent = input.files?.[0]?.name || 'No file chosen';
+      });
+    })();
+  </script>
 </body>
 </html>

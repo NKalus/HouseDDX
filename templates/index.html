@@ -6,49 +6,43 @@
   <title>House DDX</title>
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/urllogo.png') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/urllogo.png') }}" />
 
-
-  <!-- Styles -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
-  <main class="hero">
-    <!-- House background layer (behind the UI) -->
-    <div
-      class="house-layer"
-      aria-hidden="true"
-      style="background-image: url('{{ url_for('static', filename='house-md.png') }}');">
-    </div>
+  <!-- House background image -->
+  <img
+    class="house-image"
+    src="{{ url_for('static', filename='house-md.png') }}"
+    alt="House"
+    aria-hidden="true"
+  />
 
-    <!-- Foreground UI -->
-    <div class="stack">
-      <h1>Upload an Image for House to Diagnose</h1>
+  <main class="container">
+    <h1>Upload an Image for House to Diagnose</h1>
 
-      <form method="POST" action="/" enctype="multipart/form-data" class="card">
+    <form method="POST" enctype="multipart/form-data" class="upload-card">
+      <label class="file-wrap">
         <input type="file" name="image" accept="image/*" required />
-        <button type="submit">Differential Diagnosis... Go!</button>
-      </form>
+      </label>
+      <button type="submit" class="cta">Differential Diagnosis... Go!</button>
+    </form>
 
-      <p class="disclaimer">Not medical advice. Obviously.</p>
+    <p class="disclaimer">Not medical advice. Obviously.</p>
 
-      {% if diagnosis %}
-      <section class="dx-card">
+    {% if diagnosis %}
+      <section class="result-card">
         <h2>Diagnosis:</h2>
         <p>{{ diagnosis }}</p>
-        {% if random_quote %}
-        <blockquote>{{ random_quote }}</blockquote>
-        {% endif %}
-        <a class="again" href="/">Run another</a>
       </section>
-      {% endif %}
-    </div>
+    {% endif %}
   </main>
 
-  <!-- Wilson corner -->
-  <div class="wilson-corner" role="complementary" aria-label="Dr. Wilson cameo">
-    <img src="{{ url_for('static', filename='wilson.png') }}" alt="Dr. Wilson" />
+  <!-- Wilson corner badge -->
+  <aside class="wilson-corner">
+    <img src="{{ url_for('static', filename='wilson.png') }}" alt="Wilson" />
     <p>I too am on this website</p>
-  </div>
+  </aside>
 </body>
 </html>

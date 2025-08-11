@@ -24,7 +24,7 @@ body{
   position:relative;
   z-index:2;            /* stays above the House image */
   max-width:1100px;
-  margin:18vh auto 12vh;
+  margin:18vh auto 12vh; /* desktop baseline */
   padding:0 24px;
   text-align:center;
 }
@@ -156,15 +156,20 @@ button:active{ transform:translateY(1px) }
 
 /* ---- Responsive tweaks ---- */
 @media (max-width: 900px){
+  .wrap{
+    margin-top:14vh; /* lower on tablets/phones up to 900px */
+  }
   .house-bg{
     top:54%;
     transform:translate(-50%, -48%);
     width:min(88vw, 680px);
   }
-  .wrap{ margin-top:8vh }
 }
 
 @media (max-width: 600px){
+  .wrap{
+    margin-top:16vh; /* even lower on small phones */
+  }
   .house-bg{
     top:58%;
     transform:translate(-50%, -52%);
@@ -178,9 +183,4 @@ button:active{ transform:translateY(1px) }
   }
   .wilson-corner img{ width:56px; height:56px }
   .wilson-corner p{ font-size:13px; max-width:140px }
-@media (max-width: 900px) {
-    .wrap {
-        margin-top: 14vh; /* increase/decrease if you want it lower/higher */
-    }
-
 }

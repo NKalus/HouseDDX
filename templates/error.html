@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Something Broke</title>
-  <link rel="stylesheet" href="/static/style.css" />
+  <title>Error • House DDX</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
   <main class="wrap">
-    <h1>500 — The Ducklings Dropped Something</h1>
-    <p>{{ message }}</p>
-    <a href="/">Back home</a>
+    <section class="dx card">
+      <h2>Something broke.</h2>
+      <p>{{ message }}</p>
+    </section>
   </main>
 </body>
 </html>

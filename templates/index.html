@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>House DDX</title>
 
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='urllogo.png') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='urllogo.png') }}" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
-  <!-- House image sits behind everything -->
-  <img class="house-bg" src="{{ url_for('static', filename='house-md.png') }}" alt="House" />
+  <!-- Background House image (behind everything) -->
+  <img class="house-bg"
+       src="{{ url_for('static', filename='house-md.png') }}"
+       alt="Dr. House" />
 
   <main class="wrap">
     <h1>Upload an Image for House to Diagnose</h1>
 
-    <form method="POST" action="/" enctype="multipart/form-data" class="card">
+    <form method="POST" action="{{ url_for('home_post') }}" enctype="multipart/form-data" class="card">
       <div class="row">
         <input type="file" name="image" accept="image/*" required />
         <button type="submit">Differential Diagnosis... Go!</button>
@@ -29,7 +34,7 @@
       <h2>Diagnosis:</h2>
       <p>{{ diagnosis }}</p>
       {% if random_quote %}
-      <blockquote class="quote">“{{ random_quote }}”</blockquote>
+        <blockquote class="quote">“{{ random_quote }}”</blockquote>
       {% endif %}
     </section>
     {% endif %}

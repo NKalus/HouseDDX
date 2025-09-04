@@ -1,49 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>House DDX</title>
-
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='urllogo.png') }}" />
-  <!-- cache-buster so your browser actually loads new CSS -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=211" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>House Differential Diagnosis</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='urllogo.png') }}">
 </head>
 <body>
-  <!-- Background House image with fallback -->
-  <img
-    class="house-bg"
-    src="{{ url_for('static', filename='house-md.png') }}"
-    onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/house-md.png') }}';"
-    alt="House" />
-
-  <main class="wrap">
+  <div class="wrap">
     <h1>Upload an Image for House to Diagnose</h1>
 
-    <form method="POST" action="/" enctype="multipart/form-data" class="card">
-      <div class="row">
-        <input type="file" name="image" accept="image/*" required />
-        <button type="submit">Differential Diagnosis... Go!</button>
+    <!-- Upload form -->
+    <form method="POST" enctype="multipart/form-data">
+      <div class="card">
+        <input type="file" name="file">
+        <button type="submit">Differential Diagnosis… Go!</button>
       </div>
     </form>
 
     <p class="disclaimer">Not medical advice. Obviously.</p>
 
+    <!-- Diagnosis section -->
     {% if diagnosis %}
-    <section class="dx card">
+    <div class="diagnosis-card">
       <h2>Diagnosis:</h2>
       <p>{{ diagnosis }}</p>
-      {% if random_quote %}
-      <p class="quote"><em>{{ random_quote }}</em></p>
+      {% if quote %}
+      <blockquote>“{{ quote }}”</blockquote>
       {% endif %}
-    </section>
+    </div>
     {% endif %}
-  </main>
+  </div>
 
-  <!-- Wilson corner widget -->
-  <div class="wilson-corner">
-    <img src="{{ url_for('static', filename='wilson.png') }}" alt="Dr. Wilson" />
-    <p>I too am on this website</p>
+  <!-- House background image -->
+  <img class="house-bg" src="{{ url_for('static', filename='img/house-md.png') }}" alt="House">
+
+  <!-- Wilson bubble -->
+  <div class="wilson-bubble">
+    <img src="{{ url_for('static', filename='img/wilson.png') }}" alt="Wilson">
+    <span>I too am on this website</span>
   </div>
 </body>
 </html>

@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>House DDX</title>
 
-  <!-- Favicon -->
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='urllogo.png') }}" />
-
-  <!-- Styles -->
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
-  <!-- Background House image (behind everything) -->
-  <img class="house-bg"
-       src="{{ url_for('static', filename='house-md.png') }}"
-       alt="Dr. House" />
+  <!-- House hero image behind everything -->
+  <img
+    class="house-bg"
+    src="{{ url_for('static', filename='house-md.png') }}"
+    alt="House" />
 
   <main class="wrap">
     <h1>Upload an Image for House to Diagnose</h1>
 
-    <form method="POST" action="{{ url_for('home_post') }}" enctype="multipart/form-data" class="card">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="flash">
+        {% for m in messages %}<p>{{ m }}</p>{% endfor %}
+      </div>
+    {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('index') }}" enctype="multipart/form-data" class="card">
       <div class="row">
         <input type="file" name="image" accept="image/*" required />
         <button type="submit">Differential Diagnosis... Go!</button>
@@ -34,7 +40,7 @@
       <h2>Diagnosis:</h2>
       <p>{{ diagnosis }}</p>
       {% if random_quote %}
-        <blockquote class="quote">“{{ random_quote }}”</blockquote>
+      <blockquote class="quote">{{ random_quote }}</blockquote>
       {% endif %}
     </section>
     {% endif %}
